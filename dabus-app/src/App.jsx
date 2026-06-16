@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./App.module.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -29,6 +29,9 @@ import { useUpdateCheck } from "./hooks/useUpdateCheck";
 import { useAndroidBack } from "./hooks/useAndroidBack";
 import { useMediaQuery } from "./hooks/useMediaQuery";
 import { useAlerts } from "./hooks/useAlerts";
+import DestinationsTab from "./components/DestinationsTab";
+import DestinationDetail from "./components/DestinationDetail";
+import { useDestinations } from "./hooks/useDestinations";
 import { API_BASE } from "./constants";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -139,6 +142,21 @@ function App() {
     dismiss: dismissAlert,
     restore: restoreAlerts,
   } = useAlerts();
+
+  const {
+    filtered: filteredDestinations,
+    query: destQuery,
+    setQuery: setDestQuery,
+    plan,
+    planLoading,
+    planError,
+    planTrip,
+    clearPlan,
+  } = useDestinations();
+
+  // Go: the destination whose detail view is open (null = show the grid).
+  const [goDest, setGoDest] = useState(null);
+  const plannedDestRef = useRef(null);
 
   const { isPulling, pullDistance, triggered } = usePullToRefresh(
     () => fetchArrivals(currentStop.id),
@@ -268,6 +286,31 @@ function App() {
     clearBusTracking();
     setTrackingView(false);
     setActiveTab(tab);
+  };
+
+  // Go: destination-first shortcuts.
+  const handleSelectDestination = (d) => {
+    setGoDest(d);
+    // Need a GPS fix to plan from; if we don't have one yet, request it and let
+    // the effect below plan once it lands.
+    if (!userLocation) findNearbyStops();
+  };
+
+  // Plan once we have both a selected destination and a location. The ref guards
+  // against re-planning the same destination on unrelated re-renders.
+  useEffect(() => {
+    if (goDest && userLocation && plannedDestRef.current !== goDest.id) {
+      plannedDestRef.current = goDest.id;
+      planTrip(goDest.id, userLocation.lat, userLocation.lon);
+    }
+  }, [goDest, userLocation, planTrip]);
+
+  const closeGoDetail = () => {
+    setGoDest(null);
+    clearPlan();
+    plannedDestRef.current = null;
+    clearBusTracking();
+    setTrackingView(false);
   };
 
   // ── Shared back actions ───────────────────────────────────────────────────
@@ -418,7 +461,8 @@ function App() {
     (trackingView && !!busLocation) ||
     routeMapView ||
     (!!arrivals && arrivalsTab === activeTab) ||
-    (activeTab === "routes" && !!selectedRoute);
+    (activeTab === "routes" && !!selectedRoute) ||
+    (activeTab === "go" && !!goDest);
 
   // Performs ONE in-app back step (deeper → shallower → home tab).
   // Recreated every render so it always sees fresh state; useAndroidBack
@@ -440,6 +484,8 @@ function App() {
     } else if (activeTab === "routes" && selectedRoute) {
       clearSelectedRoute();
       clearArrivals();
+    } else if (activeTab === "go" && goDest) {
+      closeGoDetail();
     } else if (activeTab !== "nearby") {
       // Base level of a non-home tab — go back to home.
       setActiveTab("nearby");
@@ -495,6 +541,30 @@ function App() {
           dismissedAlertsForRoute={dismissedAlertsForRoute}
           onDismissAlert={dismissAlert}
           onRestoreAlerts={restoreAlerts}
+        />
+      )}
+
+      {activeTab === "go" && !goDest && (
+        <DestinationsTab
+          filtered={filteredDestinations}
+          query={destQuery}
+          setQuery={setDestQuery}
+          onSelect={handleSelectDestination}
+        />
+      )}
+
+      {activeTab === "go" && goDest && (
+        <DestinationDetail
+          plan={plan}
+          planLoading={planLoading}
+          planError={planError}
+          onBack={closeGoDetail}
+          onTrack={(bus) => {
+            fetchBusLocation(bus);
+            setTrackingView(true);
+          }}
+          selectedBus={selectedBus}
+          trackingLoading={trackingLoading}
         />
       )}
 
@@ -660,6 +730,7 @@ function App() {
         {/* Desktop search bar — hidden on history/favorites list view (no search needed) */}
         <div className={styles.desktopSearch} style={
           activeTab === "settings" ||
+          activeTab === "go" ||
           ((activeTab === "history" || activeTab === "favorites") &&
             !(arrivals && arrivalsTab === activeTab))
             ? { display: "none" }
@@ -920,6 +991,24 @@ function App() {
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
           </svg>
           <span>Home</span>
+        </button>
+
+        <button
+          className={`${styles.navBtn} ${activeTab === "go" ? styles.active : ""}`}
+          onClick={() => switchTab("go")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="3 11 22 2 13 21 11 13 3 11" />
+          </svg>
+          <span>Go</span>
         </button>
 
         <button

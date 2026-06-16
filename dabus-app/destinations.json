@@ -41,6 +41,31 @@
         "stop_id": "1102",
         "name": "ALA MOANA BL + OPP ALA MOANA CENTER",
         "dist_m": 216
+      },
+      {
+        "stop_id": "999",
+        "name": "KAPIOLANI BL + KEEAUMOKU ST",
+        "dist_m": 221
+      },
+      {
+        "stop_id": "847",
+        "name": "KONA ST + OPP KONA IKI ST (NS)",
+        "dist_m": 226
+      },
+      {
+        "stop_id": "986",
+        "name": "KAPIOLANI BL + KEEAUMOKU ST",
+        "dist_m": 244
+      },
+      {
+        "stop_id": "821",
+        "name": "KEEAUMOKU ST + KAPIOLANI BL",
+        "dist_m": 246
+      },
+      {
+        "stop_id": "4790",
+        "name": "KONA IKI ST + KONA ST",
+        "dist_m": 248
       }
     ],
     "routes": [
@@ -156,6 +181,16 @@
         "stop_id": "860",
         "name": "DOLE ST + LOWER CAMPUS RD",
         "dist_m": 202
+      },
+      {
+        "stop_id": "298",
+        "name": "METCALF ST + UNIVERSITY AVE",
+        "dist_m": 222
+      },
+      {
+        "stop_id": "874",
+        "name": "UNIVERSITY AVE + OPP METCALF ST",
+        "dist_m": 237
       }
     ],
     "routes": [
@@ -235,6 +270,21 @@
         "stop_id": "4858",
         "name": "S. KING ST + PUNCHBOWL ST (WEST)",
         "dist_m": 216
+      },
+      {
+        "stop_id": "45",
+        "name": "S BERETANIA ST + PUNCHBOWL ST",
+        "dist_m": 225
+      },
+      {
+        "stop_id": "323",
+        "name": "PUNCHBOWL ST + STATE CAPITOL",
+        "dist_m": 242
+      },
+      {
+        "stop_id": "743",
+        "name": "ALAKEA ST + S KING ST",
+        "dist_m": 247
       }
     ],
     "routes": [
@@ -406,6 +456,11 @@
         "stop_id": "10054",
         "name": "KALAUAO PEARLRIDGE STATION",
         "dist_m": 159
+      },
+      {
+        "stop_id": "4724",
+        "name": "KAMEHAMEHA HWY + KALAUAO PEARLRIDGE STATION",
+        "dist_m": 176
       }
     ],
     "routes": [
@@ -460,6 +515,21 @@
         "stop_id": "1472",
         "name": "KOA KAHIKO ST + MEAKAUA ST",
         "dist_m": 206
+      },
+      {
+        "stop_id": "1476",
+        "name": "KANEOHE BAY DR + AUMOKU ST",
+        "dist_m": 230
+      },
+      {
+        "stop_id": "1506",
+        "name": "KOA KAHIKO ST + OPP NAMOKU ST",
+        "dist_m": 235
+      },
+      {
+        "stop_id": "3607",
+        "name": "KANEOHE BAY DR + MAKALANI ST",
+        "dist_m": 243
       }
     ],
     "routes": [
@@ -585,6 +655,11 @@
         "stop_id": "438",
         "name": "N BERETANIA ST + OPP SMITH ST",
         "dist_m": 227
+      },
+      {
+        "stop_id": "938",
+        "name": "IWILEI RD + N KING ST",
+        "dist_m": 232
       }
     ],
     "routes": [
@@ -717,6 +792,16 @@
         "stop_id": "4723",
         "name": "WAKEA ST + HAUMEA ST",
         "dist_m": 156
+      },
+      {
+        "stop_id": "663",
+        "name": "KAMOKILA BL + ULUOHIA ST",
+        "dist_m": 174
+      },
+      {
+        "stop_id": "4249",
+        "name": "KAMOKILA BL + OPP ULUOHIA ST",
+        "dist_m": 230
       }
     ],
     "routes": [

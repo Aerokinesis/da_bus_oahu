@@ -78,6 +78,46 @@ const knownRouteShortNames = new Set(
     routeDirections.map(r => r.route_short_name).filter(Boolean)
 )
 
+// Go: destination-first shortcuts.
+// Curated Oahu destinations, enriched offline with verified stops + serving
+// routes (see gen_destinations.js / docs/destination-first-spec.md).
+const destinations = JSON.parse(fs.readFileSync("./destinations.json", "utf8"))
+const destinationsById = destinations.reduce((acc, d) => {
+    acc[d.id] = d
+    return acc
+}, {})
+
+// Per-route ordered-stop indices, so we can verify a boarding stop comes BEFORE
+// a destination stop within a single direction (the travel-direction check).
+// route_short_name -> [ { id, seq: Map(stop_id -> index) } ]
+const routeSeqIndex = {}
+for (const rd of routeDirections) {
+    const name = rd.route_short_name
+    if (!name) continue
+    const seq = new Map()
+    rd.stops.forEach((s, i) => { if (!seq.has(s.stop_id)) seq.set(s.stop_id, i) })
+    if (!routeSeqIndex[name]) routeSeqIndex[name] = []
+    routeSeqIndex[name].push({ id: rd.id, seq })
+}
+
+// Does `routeName` carry a rider from boardingStopId toward any destStopId in a
+// single direction? True only if some direction lists the boarding stop earlier
+// in its sequence than a destination stop -- this filters out the wrong
+// direction and loop-route artifacts.
+function routeGoesToward(routeName, boardingStopId, destStopIds) {
+    const dirs = routeSeqIndex[routeName]
+    if (!dirs) return false
+    for (const d of dirs) {
+        const bi = d.seq.get(boardingStopId)
+        if (bi === undefined) continue
+        for (const ds of destStopIds) {
+            const di = d.seq.get(ds)
+            if (di !== undefined && bi < di) return true
+        }
+    }
+    return false
+}
+
 // Calculate distance between two lat/lon points in miles
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 3958.8
@@ -225,6 +265,112 @@ app.get("/api/nearby-stops-by-coords", (req, res) => {
         .slice(0, 20)
 
     res.json({ stops: nearbyStops })
+})
+
+// Go: list of curated destinations (static metadata only; no live data).
+app.get("/api/destinations", (req, res) => {
+    res.json({
+        destinations: destinations.map(({ id, name, aliases, category, lat, lon, note }) =>
+            ({ id, name, aliases, category, lat, lon, note }))
+    })
+})
+
+// Go: plan a direct ride from the user's location to a curated destination.
+// Returns ranked one-seat options with live arrivals. Phase 1 = direct rides only.
+app.get("/api/trip-to/:destId", async (req, res) => {
+    const destId = req.params.destId
+    if (!isSafeId(destId) || !Object.prototype.hasOwnProperty.call(destinationsById, destId)) {
+        return res.status(404).json({ error: "Unknown destination" })
+    }
+    const dest = destinationsById[destId]
+    const lat = parseFloat(req.query.lat)
+    const lon = parseFloat(req.query.lon)
+    if (isNaN(lat) || isNaN(lon)) {
+        return res.status(400).json({ error: "Invalid coordinates" })
+    }
+
+    const WALK_RADIUS_MI = 0.4
+    const destStopIds = dest.destinationStops.map(s => s.stop_id)
+    const destRoutes = new Set(dest.routes)
+
+    // Boarding candidates: stops near the user, served by a destination route
+    // heading the right way. Cap to the nearest dozen to bound OTS calls.
+    const boarding = stops
+        .map(stop => ({
+            stop_id: displayStopId(stop.stop_id),
+            stop_name: stop.stop_name,
+            distance: getDistance(lat, lon, parseFloat(stop.stop_lat), parseFloat(stop.stop_lon)),
+        }))
+        .filter(s => s.distance <= WALK_RADIUS_MI)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 12)
+        .map(s => ({
+            ...s,
+            routes: [...destRoutes].filter(r => routeGoesToward(r, s.stop_id, destStopIds)),
+        }))
+        .filter(s => s.routes.length > 0)
+
+    const publicDest = { id: dest.id, name: dest.name, category: dest.category, note: dest.note }
+
+    if (boarding.length === 0) {
+        return res.json({ destination: publicDest, options: [] })
+    }
+
+    // Live arrivals for the nearest boarding stops (cap at 6 to limit OTS load).
+    const apiKey = process.env.THEBUS_API_KEY
+    const settled = await Promise.allSettled(
+        boarding.slice(0, 6).map(async b => {
+            const url = new URL("http://api.thebus.org/arrivalsJSON/")
+            url.searchParams.set("key", apiKey)
+            url.searchParams.set("stop", b.stop_id)
+            const r = await fetch(url.toString(), { signal: AbortSignal.timeout(5000) })
+            const data = await r.json()
+            return { boarding: b, arrivals: data.arrivals || [] }
+        })
+    )
+
+    const now = Date.now()
+    const options = []
+    for (const s of settled) {
+        if (s.status !== "fulfilled") continue
+        const { boarding: b, arrivals } = s.value
+        for (const a of arrivals) {
+            if (!b.routes.includes(a.route)) continue
+            if (a.canceled === "1") continue
+            const mins = Math.round((new Date(`${a.date} ${a.stopTime}`).getTime() - now) / 60000)
+            if (isNaN(mins) || mins < 0) continue
+            options.push({
+                route: a.route,
+                headsign: a.headsign,
+                estimated: a.estimated === "1",
+                vehicle: a.vehicle,
+                trip: a.trip,
+                shape: a.shape,
+                latitude: a.latitude,
+                longitude: a.longitude,
+                minutes: mins,
+                stopTime: a.stopTime,
+                boarding: {
+                    stop_id: b.stop_id,
+                    stop_name: b.stop_name,
+                    walk_miles: Math.round(b.distance * 100) / 100,
+                },
+            })
+        }
+    }
+
+    // Keep the soonest departure per (route + boarding stop), then rank by a
+    // rough "walk + wait" cost (~20 min/mile walking at 3 mph).
+    const best = new Map()
+    for (const o of options) {
+        const key = `${o.route}@${o.boarding.stop_id}`
+        if (!best.has(key) || o.minutes < best.get(key).minutes) best.set(key, o)
+    }
+    const ranked = [...best.values()]
+        .sort((a, b) => (a.boarding.walk_miles * 20 + a.minutes) - (b.boarding.walk_miles * 20 + b.minutes))
+        .slice(0, 4)
+
+    res.json({ destination: publicDest, options: ranked })
 })
 
 // Stop info endpoint

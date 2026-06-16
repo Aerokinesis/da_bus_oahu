@@ -100,7 +100,7 @@ for (const d of DESTINATIONS) {
     lat: d.lat,
     lon: d.lon,
     note: d.note,
-    destinationStops: near.slice(0, 6).map((s) => ({ stop_id: s.id, name: s.name, dist_m: s.dist })),
+    destinationStops: near.map((s) => ({ stop_id: s.id, name: s.name, dist_m: s.dist })),
     routes,
   });
 }
