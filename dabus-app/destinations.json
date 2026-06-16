@@ -1,0 +1,771 @@
+[
+  {
+    "id": "ala-moana",
+    "name": "Ala Moana Center",
+    "aliases": [
+      "ala mo",
+      "the mall",
+      "shopping center"
+    ],
+    "category": "shopping",
+    "lat": 21.29139,
+    "lon": -157.84361,
+    "note": "Ala Moana Transit Center sits behind the mall — most routes stop here.",
+    "destinationStops": [
+      {
+        "stop_id": "426",
+        "name": "KONA ST + OPP KEEAUMOKU ST (NS)",
+        "dist_m": 107
+      },
+      {
+        "stop_id": "760",
+        "name": "KONA ST + OPP KEEAUMOKU ST (FS)",
+        "dist_m": 145
+      },
+      {
+        "stop_id": "425",
+        "name": "KONA ST + OPP KONA IKI ST (FS)",
+        "dist_m": 152
+      },
+      {
+        "stop_id": "761",
+        "name": "ALA MOANA BL + ALA MOANA CENTER",
+        "dist_m": 192
+      },
+      {
+        "stop_id": "428",
+        "name": "ALA MOANA BL + ALA MOANA CENTER",
+        "dist_m": 194
+      },
+      {
+        "stop_id": "1102",
+        "name": "ALA MOANA BL + OPP ALA MOANA CENTER",
+        "dist_m": 216
+      }
+    ],
+    "routes": [
+      "3",
+      "5",
+      "6",
+      "7",
+      "8",
+      "13",
+      "42",
+      "52",
+      "53",
+      "60",
+      "65",
+      "67",
+      "88A",
+      "102",
+      "E",
+      "W LINE"
+    ]
+  },
+  {
+    "id": "waikiki",
+    "name": "Waikiki",
+    "aliases": [
+      "the beach",
+      "kuhio ave",
+      "waikiki beach"
+    ],
+    "category": "beach",
+    "lat": 21.27831,
+    "lon": -157.82481,
+    "note": "Kūhiō Ave is the main bus corridor through Waikiki.",
+    "destinationStops": [
+      {
+        "stop_id": "24",
+        "name": "KUHIO AVE + WALINA ST",
+        "dist_m": 0
+      },
+      {
+        "stop_id": "152",
+        "name": "KUHIO AVE + KAIULANI AVE",
+        "dist_m": 109
+      },
+      {
+        "stop_id": "23",
+        "name": "KUHIO AVE + KAIULANI AVE",
+        "dist_m": 191
+      },
+      {
+        "stop_id": "4867",
+        "name": "KUHIO AVE + DUKES LN",
+        "dist_m": 195
+      },
+      {
+        "stop_id": "4870",
+        "name": "KUHIO AVE + OPP DUKES LN",
+        "dist_m": 241
+      }
+    ],
+    "routes": [
+      "2",
+      "2L",
+      "8",
+      "13",
+      "42",
+      "E",
+      "W LINE",
+      "W1",
+      "W2",
+      "W3"
+    ]
+  },
+  {
+    "id": "uh-manoa",
+    "name": "UH Mānoa",
+    "aliases": [
+      "the university",
+      "uh",
+      "manoa campus"
+    ],
+    "category": "school",
+    "lat": 21.29716,
+    "lon": -157.82109,
+    "note": "University Ave + Dole St is the closest stop to most of campus.",
+    "destinationStops": [
+      {
+        "stop_id": "297",
+        "name": "UNIVERSITY AVE + DOLE ST",
+        "dist_m": 0
+      },
+      {
+        "stop_id": "414",
+        "name": "UNIVERSITY AVE + DOLE ST",
+        "dist_m": 73
+      },
+      {
+        "stop_id": "983",
+        "name": "SINCLAIR CIRCLE",
+        "dist_m": 89
+      },
+      {
+        "stop_id": "4330",
+        "name": "DOLE ST + LOWER CAMPUS RD",
+        "dist_m": 147
+      },
+      {
+        "stop_id": "413",
+        "name": "UNIVERSITY AVE + METCALF ST",
+        "dist_m": 169
+      },
+      {
+        "stop_id": "860",
+        "name": "DOLE ST + LOWER CAMPUS RD",
+        "dist_m": 202
+      }
+    ],
+    "routes": [
+      "4",
+      "6",
+      "13",
+      "A LINE"
+    ]
+  },
+  {
+    "id": "hnl-airport",
+    "name": "Honolulu Airport (HNL)",
+    "aliases": [
+      "the airport",
+      "hnl",
+      "daniel inouye"
+    ],
+    "category": "transit",
+    "lat": 21.33432,
+    "lon": -157.92081,
+    "note": "Use the Lelepaua airport station; it's a walk from the terminals.",
+    "destinationStops": [
+      {
+        "stop_id": "4848",
+        "name": "LELEPAUA AIRPORT STATION",
+        "dist_m": 0
+      },
+      {
+        "stop_id": "10032",
+        "name": "LELEPAUA DANIEL K. INOUYE INTERNATIONAL AIRPORT STATION",
+        "dist_m": 62
+      }
+    ],
+    "routes": [
+      "W LINE"
+    ]
+  },
+  {
+    "id": "downtown",
+    "name": "Downtown Honolulu",
+    "aliases": [
+      "town",
+      "downtown",
+      "the city"
+    ],
+    "category": "transit",
+    "lat": 21.30739,
+    "lon": -157.85831,
+    "note": "King St and Hotel St carry most downtown routes.",
+    "destinationStops": [
+      {
+        "stop_id": "130",
+        "name": "S HOTEL ST + RICHARDS ST",
+        "dist_m": 118
+      },
+      {
+        "stop_id": "737",
+        "name": "S BERETANIA ST + ETERNAL FLAME",
+        "dist_m": 168
+      },
+      {
+        "stop_id": "46",
+        "name": "S HOTEL ST + ALAKEA ST",
+        "dist_m": 184
+      },
+      {
+        "stop_id": "4860",
+        "name": "S. BERETANIA ST + PUNCHBOWL ST",
+        "dist_m": 199
+      },
+      {
+        "stop_id": "744",
+        "name": "ALAKEA ST + S HOTEL ST",
+        "dist_m": 204
+      },
+      {
+        "stop_id": "4858",
+        "name": "S. KING ST + PUNCHBOWL ST (WEST)",
+        "dist_m": 216
+      }
+    ],
+    "routes": [
+      "1",
+      "1L",
+      "2",
+      "2L",
+      "3",
+      "4",
+      "6",
+      "13",
+      "42",
+      "52",
+      "53",
+      "54",
+      "60",
+      "65",
+      "66",
+      "67",
+      "80",
+      "81",
+      "82",
+      "83",
+      "84",
+      "84A",
+      "85",
+      "86",
+      "87",
+      "88",
+      "88A",
+      "89",
+      "90",
+      "91",
+      "91A",
+      "92",
+      "93",
+      "94",
+      "95",
+      "96",
+      "96A",
+      "97",
+      "98",
+      "98A",
+      "A LINE",
+      "E",
+      "PH6"
+    ]
+  },
+  {
+    "id": "diamond-head",
+    "name": "Diamond Head",
+    "aliases": [
+      "leahi",
+      "the crater",
+      "diamond head hike"
+    ],
+    "category": "hike",
+    "lat": 21.26968,
+    "lon": -157.8136,
+    "note": "Route 23 runs up Monsarrat Ave; it's still a walk to the trailhead.",
+    "destinationStops": [
+      {
+        "stop_id": "96",
+        "name": "MONSARRAT AVE + KANAINA ST",
+        "dist_m": 67
+      },
+      {
+        "stop_id": "235",
+        "name": "MONSARRAT AVE + KANAINA AVE",
+        "dist_m": 78
+      },
+      {
+        "stop_id": "232",
+        "name": "MONSARRAT AVE + CAMPBELL AVE",
+        "dist_m": 194
+      },
+      {
+        "stop_id": "95",
+        "name": "CAMPBELL AVE + MONSARRAT AVE",
+        "dist_m": 228
+      },
+      {
+        "stop_id": "236",
+        "name": "MONSARRAT AVE + CAMPBELL AVE",
+        "dist_m": 229
+      }
+    ],
+    "routes": [
+      "2",
+      "2L",
+      "200"
+    ]
+  },
+  {
+    "id": "kahala-mall",
+    "name": "Kāhala Mall",
+    "aliases": [
+      "kahala",
+      "kahala mall"
+    ],
+    "category": "shopping",
+    "lat": 21.27852,
+    "lon": -157.78848,
+    "note": null,
+    "destinationStops": [
+      {
+        "stop_id": "3166",
+        "name": "WAIALAE AVE + HUNAKAI ST",
+        "dist_m": 68
+      },
+      {
+        "stop_id": "4104",
+        "name": "HUNAKAI ST + WAIALAE AVE",
+        "dist_m": 71
+      },
+      {
+        "stop_id": "3084",
+        "name": "WAIALAE AVE + HUNAKAI ST",
+        "dist_m": 87
+      }
+    ],
+    "routes": [
+      "1",
+      "1L",
+      "2L",
+      "14",
+      "23",
+      "234"
+    ]
+  },
+  {
+    "id": "pearlridge",
+    "name": "Pearlridge Center",
+    "aliases": [
+      "pearlridge",
+      "the aiea mall"
+    ],
+    "category": "shopping",
+    "lat": 21.38389,
+    "lon": -157.94556,
+    "note": "Skyline now reaches Pearlridge — check rail too.",
+    "destinationStops": [
+      {
+        "stop_id": "977",
+        "name": "KAONOHI ST + OPP MOANALUA LP",
+        "dist_m": 52
+      },
+      {
+        "stop_id": "2591",
+        "name": "KAONOHI ST + MOANALUA LP",
+        "dist_m": 55
+      },
+      {
+        "stop_id": "482",
+        "name": "KAMEHAMEHA HWY + KAONOHI ST",
+        "dist_m": 104
+      },
+      {
+        "stop_id": "991",
+        "name": "KAONOHI ST + OPP WESTRIDGE CENTER",
+        "dist_m": 130
+      },
+      {
+        "stop_id": "4725",
+        "name": "KAMEHAMEHA HWY + OPP KALAUAO PEARLRIDGE STATION",
+        "dist_m": 154
+      },
+      {
+        "stop_id": "10054",
+        "name": "KALAUAO PEARLRIDGE STATION",
+        "dist_m": 159
+      }
+    ],
+    "routes": [
+      "32",
+      "42",
+      "51",
+      "53",
+      "541",
+      "542",
+      "544",
+      "545"
+    ]
+  },
+  {
+    "id": "windward-mall",
+    "name": "Windward Mall",
+    "aliases": [
+      "windward mall",
+      "kaneohe mall"
+    ],
+    "category": "shopping",
+    "lat": 21.40139,
+    "lon": -157.79778,
+    "note": null,
+    "destinationStops": [
+      {
+        "stop_id": "1473",
+        "name": "KOA KAHIKO ST + KAMEHAMEHA HWY",
+        "dist_m": 129
+      },
+      {
+        "stop_id": "1505",
+        "name": "AUMOKU ST + KANEOHE BAY DR",
+        "dist_m": 145
+      },
+      {
+        "stop_id": "1474",
+        "name": "KAMEHAMEHA HWY + KOA KAHIKO ST",
+        "dist_m": 162
+      },
+      {
+        "stop_id": "1475",
+        "name": "KAMEHAMEHA HWY + KANEOHE BAY DR",
+        "dist_m": 190
+      },
+      {
+        "stop_id": "1765",
+        "name": "KAMEHAMEHA HWY + LULUKU RD",
+        "dist_m": 201
+      },
+      {
+        "stop_id": "1472",
+        "name": "KOA KAHIKO ST + MEAKAUA ST",
+        "dist_m": 206
+      }
+    ],
+    "routes": [
+      "60",
+      "61",
+      "65",
+      "69",
+      "85",
+      "651",
+      "PH4"
+    ]
+  },
+  {
+    "id": "kapiolani-park",
+    "name": "Kapiolani Park",
+    "aliases": [
+      "kapiolani",
+      "the zoo",
+      "waikiki shell"
+    ],
+    "category": "beach",
+    "lat": 21.26847,
+    "lon": -157.81975,
+    "note": "Closest stops are along Kalākaua near the zoo and aquarium.",
+    "destinationStops": [
+      {
+        "stop_id": "1861",
+        "name": "MONSARRAT AVE + KAPIOLANI PARK (CITY)",
+        "dist_m": 110
+      },
+      {
+        "stop_id": "88",
+        "name": "MONSARRAT AVE + KAPIOLANI PARK",
+        "dist_m": 151
+      },
+      {
+        "stop_id": "87",
+        "name": "MONSARRAT AVE + KALAKAUA AVE",
+        "dist_m": 195
+      }
+    ],
+    "routes": [
+      "8",
+      "42",
+      "E",
+      "W1",
+      "W2",
+      "W3"
+    ]
+  },
+  {
+    "id": "ala-moana-beach",
+    "name": "Ala Moana Beach Park",
+    "aliases": [
+      "magic island",
+      "ala moana beach"
+    ],
+    "category": "beach",
+    "lat": 21.28958,
+    "lon": -157.84639,
+    "note": "Cross Ala Moana Blvd from the Transit Center side.",
+    "destinationStops": [
+      {
+        "stop_id": "428",
+        "name": "ALA MOANA BL + ALA MOANA CENTER",
+        "dist_m": 187
+      },
+      {
+        "stop_id": "761",
+        "name": "ALA MOANA BL + ALA MOANA CENTER",
+        "dist_m": 195
+      }
+    ],
+    "routes": [
+      "6",
+      "42",
+      "60",
+      "65",
+      "67",
+      "88A",
+      "E",
+      "W LINE"
+    ]
+  },
+  {
+    "id": "chinatown",
+    "name": "Chinatown",
+    "aliases": [
+      "chinatown",
+      "maunakea st"
+    ],
+    "category": "transit",
+    "lat": 21.31389,
+    "lon": -157.8625,
+    "note": "Hotel St is the main stop corridor.",
+    "destinationStops": [
+      {
+        "stop_id": "439",
+        "name": "N BERETANIA ST + OPP RIVER ST",
+        "dist_m": 74
+      },
+      {
+        "stop_id": "50",
+        "name": "N HOTEL ST + KEKAULIKE ST",
+        "dist_m": 131
+      },
+      {
+        "stop_id": "126",
+        "name": "N HOTEL ST + MAUNAKEA ST",
+        "dist_m": 180
+      },
+      {
+        "stop_id": "592",
+        "name": "N KING ST + RIVER ST",
+        "dist_m": 195
+      },
+      {
+        "stop_id": "4877",
+        "name": "MAUNAKEA ST + N. HOTEL ST",
+        "dist_m": 207
+      },
+      {
+        "stop_id": "438",
+        "name": "N BERETANIA ST + OPP SMITH ST",
+        "dist_m": 227
+      }
+    ],
+    "routes": [
+      "1",
+      "1L",
+      "2",
+      "2L",
+      "3",
+      "7",
+      "13",
+      "42",
+      "51",
+      "52",
+      "53",
+      "54",
+      "81",
+      "83",
+      "84",
+      "84A",
+      "90",
+      "91",
+      "91A",
+      "92",
+      "93",
+      "94",
+      "95",
+      "96",
+      "96A",
+      "97",
+      "98",
+      "98A",
+      "151",
+      "A LINE"
+    ]
+  },
+  {
+    "id": "kalihi-transit",
+    "name": "Kalihi Transit Center",
+    "aliases": [
+      "kalihi",
+      "kalihi transit"
+    ],
+    "category": "transit",
+    "lat": 21.33274,
+    "lon": -157.88881,
+    "note": "Major transfer hub and a Skyline station.",
+    "destinationStops": [
+      {
+        "stop_id": "10030",
+        "name": "KAHAUIKI KALIHI TRANSIT CENTER STATION",
+        "dist_m": 1
+      },
+      {
+        "stop_id": "453",
+        "name": "KAMEHAMEHA HWY + MIDDLE ST",
+        "dist_m": 47
+      },
+      {
+        "stop_id": "579",
+        "name": "KAMEHAMEHA HWY + OPP MIDDLE ST",
+        "dist_m": 184
+      },
+      {
+        "stop_id": "4606",
+        "name": "NIMITZ HWY + KAHAUIKI VILLAGE",
+        "dist_m": 195
+      },
+      {
+        "stop_id": "4523",
+        "name": "KALIHI TRANSIT CENTER",
+        "dist_m": 221
+      }
+    ],
+    "routes": [
+      "1",
+      "1L",
+      "2",
+      "2L",
+      "32",
+      "42",
+      "51",
+      "52",
+      "61",
+      "301",
+      "302",
+      "306",
+      "307",
+      "C",
+      "W3"
+    ]
+  },
+  {
+    "id": "kapolei",
+    "name": "Kapolei",
+    "aliases": [
+      "the second city",
+      "kapolei"
+    ],
+    "category": "transit",
+    "lat": 21.33196,
+    "lon": -158.08226,
+    "note": "Kapolei Transit Center; west-side hub for many routes.",
+    "destinationStops": [
+      {
+        "stop_id": "4633",
+        "name": "KAPOLEI TRANSIT CENTER - STOP 3",
+        "dist_m": 9
+      },
+      {
+        "stop_id": "4416",
+        "name": "KAPOLEI TRANSIT CENTER - STOP 1",
+        "dist_m": 26
+      },
+      {
+        "stop_id": "4417",
+        "name": "KAPOLEI TRANSIT CENTER - STOP 4",
+        "dist_m": 81
+      },
+      {
+        "stop_id": "4634",
+        "name": "KAPOLEI TRANSIT CENTER - STOP 2",
+        "dist_m": 90
+      },
+      {
+        "stop_id": "4722",
+        "name": "WAKEA ST + HAUMEA ST",
+        "dist_m": 132
+      },
+      {
+        "stop_id": "4723",
+        "name": "WAKEA ST + HAUMEA ST",
+        "dist_m": 156
+      }
+    ],
+    "routes": [
+      "40",
+      "41",
+      "46",
+      "95",
+      "99",
+      "411",
+      "413",
+      "414",
+      "415",
+      "416",
+      "C"
+    ]
+  },
+  {
+    "id": "hawaii-kai",
+    "name": "Hawaii Kai",
+    "aliases": [
+      "hawaii kai",
+      "koko marina"
+    ],
+    "category": "shopping",
+    "lat": 21.28,
+    "lon": -157.70972,
+    "note": "Koko Marina Center is the main stop cluster.",
+    "destinationStops": [
+      {
+        "stop_id": "272",
+        "name": "KALANIANAOLE HWY + 6999",
+        "dist_m": 47
+      },
+      {
+        "stop_id": "273",
+        "name": "KALANIANAOLE HWY + PORTLOCK RD",
+        "dist_m": 121
+      },
+      {
+        "stop_id": "193",
+        "name": "KALANIANAOLE HWY + OPP PORTLOCK RD",
+        "dist_m": 150
+      }
+    ],
+    "routes": [
+      "1",
+      "1L",
+      "80",
+      "PH6"
+    ]
+  }
+]
