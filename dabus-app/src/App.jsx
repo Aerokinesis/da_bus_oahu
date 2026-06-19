@@ -270,6 +270,20 @@ function App() {
     setActiveTab(tab);
   };
 
+  // Tapping Home always lands on a clean Home screen. Unlike switchTab, this
+  // also unwinds any open arrivals and the stop-search stack, so a user deep
+  // in stop searches (e.g. 123 -> 986 -> 442) returns to the nearby map in a
+  // single tap instead of stepping back through each previous stop.
+  const goHome = () => {
+    clearBusTracking();
+    setTrackingView(false);
+    clearArrivals();
+    setArrivalsTab(null);
+    setNearbyStopStack([]);
+    setStopSearchQuery("");
+    setActiveTab("nearby");
+  };
+
   // ── Shared back actions ───────────────────────────────────────────────────
   // Used by both the on-screen back buttons and the system back handler so
   // the two can never drift apart.
@@ -907,7 +921,7 @@ function App() {
         </div>
         <button
           className={`${styles.navBtn} ${activeTab === "nearby" ? styles.active : ""}`}
-          onClick={() => switchTab("nearby")}
+          onClick={goHome}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
