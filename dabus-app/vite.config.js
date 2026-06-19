@@ -26,6 +26,13 @@ export default defineConfig(({ mode }) => ({
     mode === 'development'
       ? [react(), basicSsl()]
       : [react(), versionFilePlugin()],
+  server: {
+    proxy: {
+      // Dev only: forward /api to the local Express backend so the HTTPS dev
+      // server (basicSsl) and HTTP backend don't trip mixed-content or CORS.
+      '/api': { target: 'http://localhost:3001', changeOrigin: true, secure: false },
+    },
+  },
   define: {
     __BUILD_ID__: JSON.stringify(buildId),
   },

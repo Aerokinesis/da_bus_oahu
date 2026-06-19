@@ -19,6 +19,7 @@
 
 .input {
   flex: 1;
+  min-width: 0; /* allow shrink so the clear button never overflows the pill */
   background: none;
   border: none;
   color: var(--text);
