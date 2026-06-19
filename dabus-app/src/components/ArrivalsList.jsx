@@ -149,15 +149,24 @@ function ArrivalsList({
       )}
 
       <div className={styles.list}>
-        {safeArrivals.map((bus) => (
+        {safeArrivals.map((bus) => {
+          const isLive = bus.estimated === "1";
+          const isCanceled = bus.canceled === "1";
+          // TheBus marks the scheduled *block* canceled even when a vehicle
+          // still runs it. Only trust the cancel when live GPS confirms it;
+          // otherwise treat it as a stale flag and show "No GPS" (as DaBus2
+          // did) rather than a contradictory "Canceled" + "Scheduled".
+          const trustCanceled = isCanceled && isLive;
+
+          return (
           <div
             key={bus.id}
-            className={`${styles.card} ${bus.canceled === "1" ? styles.canceled : ""}`}
+            className={`${styles.card} ${trustCanceled ? styles.canceled : ""}`}
           >
             <div className={styles.cardTop}>
               <div className={styles.routeBadge}>{bus.route}</div>
               <div className={styles.headsign}>
-                {bus.canceled === "1" && (
+                {trustCanceled && (
                   <span className={styles.canceledTag}>Canceled</span>
                 )}
                 {bus.headsign}
@@ -169,15 +178,15 @@ function ArrivalsList({
 
             <div className={styles.cardBottom}>
               <span
-                className={`${styles.liveTag} ${bus.estimated === "1" ? styles.live : styles.scheduled}`}
+                className={`${styles.liveTag} ${isLive ? styles.live : styles.scheduled}`}
               >
-                {bus.estimated === "1" ? "● Live" : "○ Scheduled"}
+                {isLive ? "● Live" : isCanceled ? "○ No GPS" : "○ Scheduled"}
               </span>
               <span className={styles.scheduledTime}>{bus.stopTime}</span>
-              {bus.estimated === "1" && (
+              {isLive && (
                 <span className={styles.vehicle}>Bus #{bus.vehicle}</span>
               )}
-              {bus.estimated === "1" && (
+              {isLive && (
                 selectedBus?.id === bus.id ? (
                   <span className={styles.trackingPill}>
                     {trackingLoading ? (
@@ -200,7 +209,8 @@ function ArrivalsList({
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
