@@ -145,6 +145,25 @@
   flex-shrink: 0;
 }
 
+.arrivedCard {
+  opacity: 0.9;
+}
+
+.arrivedTime {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--arrived-text);
+  flex-shrink: 0;
+}
+
+.arrivedTag {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--arrived-bg);
+  color: var(--arrived-text);
+}
+
 .cardBottom {
   display: flex;
   align-items: center;

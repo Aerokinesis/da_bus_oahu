@@ -25,6 +25,8 @@
   --live-text: #4ade80;
   --sched-bg: #1F1F2E;
   --sched-text: #888;
+  --arrived-bg: #2E1A24;
+  --arrived-text: #f472b6;
 
   --control-h: 44px;
 }
@@ -98,6 +100,8 @@ p {
   --live-text: #166534;
   --sched-bg: #e0e7ff;
   --sched-text: #3730a3;
+  --arrived-bg: #fce7f3;
+  --arrived-text: #9d174d;
 }
 
 [data-theme="dark"] {

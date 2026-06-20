@@ -12,9 +12,6 @@ function ArrivalsList({
   onSaveStop,
   lastUpdated,
   onRefresh,
-  onBack,
-  arrivalsTab,
-  routeShortName,
   alerts,
   hiddenAlerts,
   onDismissAlert,
@@ -37,7 +34,7 @@ function ArrivalsList({
   const safeArrivals = arrivals || [];
 
   const routesByDirection = safeArrivals.reduce((acc, bus) => {
-    if (!bus.direction) return acc;
+    if (bus.arrived || !bus.direction) return acc;
     if (!acc[bus.direction]) acc[bus.direction] = new Set();
     acc[bus.direction].add(bus.route);
     return acc;
@@ -150,6 +147,7 @@ function ArrivalsList({
 
       <div className={styles.list}>
         {safeArrivals.map((bus) => {
+          const isArrived = bus.arrived === true;
           const isLive = bus.estimated === "1";
           const isCanceled = bus.canceled === "1";
           // TheBus marks the scheduled *block* canceled even when a vehicle
@@ -161,51 +159,62 @@ function ArrivalsList({
           return (
           <div
             key={bus.id}
-            className={`${styles.card} ${trustCanceled ? styles.canceled : ""}`}
+            className={`${styles.card} ${isArrived ? styles.arrivedCard : ""} ${trustCanceled ? styles.canceled : ""}`}
           >
             <div className={styles.cardTop}>
               <div className={styles.routeBadge}>{bus.route}</div>
               <div className={styles.headsign}>
-                {trustCanceled && (
+                {trustCanceled && !isArrived && (
                   <span className={styles.canceledTag}>Canceled</span>
                 )}
                 {bus.headsign}
               </div>
-              <div className={styles.time}>
-                {getMinutesUntil(bus.stopTime, bus.date)}
+              <div className={isArrived ? styles.arrivedTime : styles.time}>
+                {isArrived ? "Arrived" : getMinutesUntil(bus.stopTime, bus.date)}
               </div>
             </div>
 
             <div className={styles.cardBottom}>
-              <span
-                className={`${styles.liveTag} ${isLive ? styles.live : styles.scheduled}`}
-              >
-                {isLive ? "● Live" : isCanceled ? "○ No GPS" : "○ Scheduled"}
-              </span>
-              <span className={styles.scheduledTime}>{bus.stopTime}</span>
-              {isLive && (
-                <span className={styles.vehicle}>Bus #{bus.vehicle}</span>
-              )}
-              {isLive && (
-                selectedBus?.id === bus.id ? (
-                  <span className={styles.trackingPill}>
-                    {trackingLoading ? (
-                      "Loading..."
-                    ) : (
-                      <>
-                        <span aria-hidden="true">●</span> Tracking
-                      </>
-                    )}
-                  </span>
-                ) : (
-                  <button
-                    className={styles.mapBtn}
-                    onClick={() => onShowMap(bus)}
-                    disabled={trackingLoading}
+              {isArrived ? (
+                <>
+                  <span className={styles.arrivedTag}>✓ Arrived</span>
+                  <span className={styles.scheduledTime}>Due {bus.stopTime}</span>
+                  {bus.vehicle && (
+                    <span className={styles.vehicle}>Bus #{bus.vehicle}</span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <span
+                    className={`${styles.liveTag} ${isLive ? styles.live : styles.scheduled}`}
                   >
-                    Track
-                  </button>
-                )
+                    {isLive ? "● Live" : isCanceled ? "○ No GPS" : "○ Scheduled"}
+                  </span>
+                  <span className={styles.scheduledTime}>{bus.stopTime}</span>
+                  {isLive && (
+                    <span className={styles.vehicle}>Bus #{bus.vehicle}</span>
+                  )}
+                  {isLive &&
+                    (selectedBus?.id === bus.id ? (
+                      <span className={styles.trackingPill}>
+                        {trackingLoading ? (
+                          "Loading..."
+                        ) : (
+                          <>
+                            <span aria-hidden="true">●</span> Tracking
+                          </>
+                        )}
+                      </span>
+                    ) : (
+                      <button
+                        className={styles.mapBtn}
+                        onClick={() => onShowMap(bus)}
+                        disabled={trackingLoading}
+                      >
+                        Track
+                      </button>
+                    ))}
+                </>
               )}
             </div>
           </div>
