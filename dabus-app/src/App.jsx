@@ -258,6 +258,7 @@ function App() {
   const handleFetchArrivals = async (stopId, tab) => {
     clearBusTracking();
     setTrackingView(false);
+    clearNearbyStops();
     const stopName = await fetchArrivals(stopId);
     addToHistory(stopId, stopName);
     setArrivalsTab(tab);
@@ -329,12 +330,19 @@ function App() {
     setRouteMapView(false);
   };
 
-  // Stop-number search submit (mobile top bar + desktop sidebar share this).
+  // Stop-number-or-street search submit (mobile top bar + desktop sidebar
+  // share this). Digits go straight to that stop's arrivals; anything else
+  // searches stop names and shows a dropdown via stopSearchProps below.
   const submitStopSearch = () => {
-    const id = stopSearchQuery.trim();
-    if (!id || id === String(currentStop?.id)) return;
-    if (currentStop) setNearbyStopStack((s) => [...s, currentStop.id]);
-    handleFetchArrivals(id, "nearby");
+    const q = stopSearchQuery.trim();
+    if (!q) return;
+    if (/^\d+$/.test(q)) {
+      if (q === String(currentStop?.id)) return;
+      if (currentStop) setNearbyStopStack((s) => [...s, currentStop.id]);
+      handleFetchArrivals(q, "nearby");
+    } else {
+      searchByAddress(q);
+    }
   };
   // ──────────────────────────────────────────────────────────────────────────
 
@@ -422,6 +430,27 @@ function App() {
     },
     onClear: () => {
       setSearchQuery("");
+      clearNearbyStops();
+    },
+  };
+
+  // Same stop-number-or-street search as searchProps above, but for the
+  // "Stop number" top-bar slot shown once a stop is already being tracked
+  // on the nearby tab. Selecting a result pushes the current stop onto the
+  // back stack just like submitStopSearch's numeric path does.
+  const stopSearchProps = {
+    query: stopSearchQuery,
+    setQuery: setStopSearchQuery,
+    onSearch: submitStopSearch,
+    searching: searchingAddress,
+    nearbyStops,
+    onSelectStop: (stopId) => {
+      if (currentStop) setNearbyStopStack((s) => [...s, currentStop.id]);
+      handleFetchArrivals(stopId, "nearby");
+      clearNearbyStops();
+    },
+    onClear: () => {
+      setStopSearchQuery("");
       clearNearbyStops();
     },
   };
@@ -626,16 +655,7 @@ function App() {
                 }}
               />
               <div className={styles.topBarSearchInput}>
-                {activeTab === "nearby" && (
-                  <SearchInput
-                    value={stopSearchQuery}
-                    onChange={setStopSearchQuery}
-                    placeholder="Stop number"
-                    ariaLabel="Bus stop number"
-                    onClear={() => setStopSearchQuery("")}
-                    onSubmit={submitStopSearch}
-                  />
-                )}
+                {activeTab === "nearby" && <AddressSearch {...stopSearchProps} />}
                 {activeTab === "routes" && (
                   <SearchInput
                     value={routeQuery}
@@ -684,14 +704,7 @@ function App() {
               {/* isMobile is false here, so the tracking branch self-skips */}
               <BackButton onClick={backFromNearbyArrivals} />
               <div className={styles.topBarSearchInput}>
-                <SearchInput
-                  value={stopSearchQuery}
-                  onChange={setStopSearchQuery}
-                  placeholder="Stop number"
-                  ariaLabel="Bus stop number"
-                  onClear={() => setStopSearchQuery("")}
-                  onSubmit={submitStopSearch}
-                />
+                <AddressSearch {...stopSearchProps} />
               </div>
             </div>
           ) : activeTab === "routes" && (selectedRoute || (arrivals && arrivalsTab === "routes")) ? (
