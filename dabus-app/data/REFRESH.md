@@ -1,6 +1,6 @@
 # GTFS data refresh
 
-This directory holds TheBus's GTFS static feed. The `.txt` files are gitignored — they're large (~80 MB total, `stop_times.txt` alone is ~73 MB) and TheBus publishes a new feed every 4–8 weeks, so storing them in git would mean permanent ~80 MB commits on every refresh.
+This directory holds TheBus's GTFS static feed. The `.txt` files are **committed to the repo** — the Railway backend needs them to build `processed.json` at deploy time. They total ~80 MB (`stop_times.txt` alone is ~73 MB), and TheBus publishes a new feed every 4–8 weeks. `.gitattributes` normalizes all text files to LF (`* text=auto eol=lf`), so re-downloading the **same** feed yields no git diff (only line endings differ, which git ignores) — only a genuinely new feed shows up as a change.
 
 ## When to refresh
 
@@ -16,7 +16,7 @@ TheBus's publishing cadence is roughly every 4–8 weeks, sometimes more often a
 
 ## How to refresh
 
-From this directory:
+1. Download the latest feed, from this directory:
 
 ```bash
 curl -O https://www.thebus.org/transitdata/production/google_transit.zip
@@ -24,10 +24,32 @@ unzip -o google_transit.zip
 rm google_transit.zip
 ```
 
-Then **restart the Express server** so it re-reads the files into memory:
+2. Regenerate the precomputed data the server loads at startup (avoids loading the
+   raw 80 MB feed into memory — important for Railway's 512 MB limit):
 
 ```bash
 cd ..
+node --max-old-space-size=4096 preprocess.js
+```
+
+3. Confirm there's a real change. If TheBus hasn't published a new feed, `git status`
+   will be clean (the re-download is byte-identical after LF normalization):
+
+```bash
+git status        # expect data/*.txt AND data/processed.json modified
+```
+
+4. If there are changes, commit and push to deploy — Railway redeploys the backend:
+
+```bash
+git add data/
+git commit -m "Refresh GTFS feed"
+git push origin main
+```
+
+For local testing before pushing, restart the Express server so it reloads `processed.json`:
+
+```bash
 # Ctrl+C the running server, then:
 node server.js
 ```
