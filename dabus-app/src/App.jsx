@@ -8,6 +8,7 @@ import ArrivalsList from "./components/ArrivalsList";
 import BusTrackingMap from "./components/BusTrackingMap";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Favorites from "./components/Favorites";
+import FavoritesArrivals from "./components/FavoritesArrivals";
 import SaveStopModal from "./components/SaveStopModal";
 import StopHistory from "./components/StopHistory";
 import RoutesTab from "./components/RoutesTab";
@@ -18,6 +19,7 @@ import SearchInput from "./components/SearchInput";
 import BackButton from "./components/BackButton";
 import { useArrivals } from "./hooks/useArrivals";
 import { useFavorites } from "./hooks/useFavorites";
+import { useFavoritesArrivals } from "./hooks/useFavoritesArrivals";
 import { useNearbyStops } from "./hooks/useNearbyStops";
 import { useBusTracking } from "./hooks/useBusTracking";
 import { usePullToRefresh } from "./hooks/usePullToRefresh";
@@ -107,6 +109,17 @@ function App() {
     clearFavorites,
     isCurrentStopFavorited,
   } = useFavorites();
+
+  // Only poll every favorite's arrivals while the favorites list itself
+  // is on screen — not while a specific stop is drilled into.
+  const favoritesArrivalsActive =
+    activeTab === "favorites" && (!arrivals || arrivalsTab !== "favorites");
+  const {
+    stopArrivals: favoritesArrivals,
+    loading: favoritesArrivalsLoading,
+    lastUpdated: favoritesArrivalsUpdated,
+    refresh: refreshFavoritesArrivals,
+  } = useFavoritesArrivals(favorites, favoritesArrivalsActive);
 
   const {
     nearbyStops,
@@ -511,8 +524,12 @@ function App() {
 
       {activeTab === "favorites" &&
         (!arrivals || arrivalsTab !== "favorites") && (
-          <Favorites
+          <FavoritesArrivals
             favorites={favorites}
+            stopArrivals={favoritesArrivals}
+            loading={favoritesArrivalsLoading}
+            lastUpdated={favoritesArrivalsUpdated}
+            onRefresh={refreshFavoritesArrivals}
             onSelectStop={(stopId) => handleFetchArrivals(stopId, "favorites")}
             onRemoveFavorite={(stopId) => {
               removeFavorite(stopId);
