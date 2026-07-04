@@ -125,7 +125,7 @@ app.get("/api/arrivals", async (req, res) => {
         const response = await fetch(url.toString(), { signal: AbortSignal.timeout(5000) })
         const data = await response.json()
         res.json(data)
-    } catch (_err) {
+    } catch {
         res.status(500).json({ error: "Failed to fetch arrivals" })
     }
 })
@@ -260,7 +260,7 @@ app.get("/api/alerts", async (req, res) => {
         const parsed = parseAlerts(html, knownRouteShortNames)
         alertsCache = { alerts: parsed, fetchedAt: now }
         res.json({ alerts: parsed, cached: false, stale: false, fetched_at: now })
-    } catch (_err) {
+    } catch {
         // Better to serve a stale list than a hard error — alerts are advisory.
         if (alertsCache.alerts) {
             return res.json({

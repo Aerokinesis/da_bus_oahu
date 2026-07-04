@@ -23,7 +23,9 @@ export function usePullToRefresh(onRefresh, enabled) {
   // Ref so handleTouchEnd always reads the latest value (state is stale in closures).
   const pullDistanceRef = useRef(0);
   const onRefreshRef = useRef(onRefresh);
-  onRefreshRef.current = onRefresh;
+  useEffect(() => {
+    onRefreshRef.current = onRefresh;
+  });
 
   useEffect(() => {
     if (!enabled) return;

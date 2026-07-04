@@ -28,6 +28,8 @@ import { useToast } from "./hooks/useToast";
 import { useUpdateCheck } from "./hooks/useUpdateCheck";
 import { useAndroidBack } from "./hooks/useAndroidBack";
 import { useMediaQuery } from "./hooks/useMediaQuery";
+import { usePwaInstall } from "./hooks/usePwaInstall";
+import { useRoutes } from "./hooks/useRoutes";
 import { useAlerts } from "./hooks/useAlerts";
 import { API_BASE } from "./constants";
 
@@ -38,6 +40,36 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
+
+// Back button + "Route N — destination" label row shared by the desktop
+// tracking panel and both mobile fullscreen overlays.
+function PanelHeader({ backLabel, onBack, title }) {
+  return (
+    <div className={styles.topBarSearch}>
+      <BackButton label={backLabel} onClick={onBack} />
+      <span className={styles.trackingLabel}>{title}</span>
+    </div>
+  );
+}
+
+// Fullscreen mobile overlay chrome (bus-tracking + route-map overlays).
+function MobileOverlay({ className, children }) {
+  return (
+    <div
+      className={className}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "var(--bg)",
+        zIndex: 1100,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 function App() {
   // Settings must be first — other hooks depend on settings.searchRadius
@@ -55,39 +87,11 @@ function App() {
   const [nearbyStopStack, setNearbyStopStack] = useState([]);
   const [stopSearchQuery, setStopSearchQuery] = useState("");
 
-  // PWA install prompt
-  const [installPrompt, setInstallPrompt] = useState(null);
-  const [isInstalled, setIsInstalled] = useState(
-    () => window.matchMedia("(display-mode: standalone)").matches
-  );
-
-  useEffect(() => {
-    const onBeforeInstall = (e) => {
-      e.preventDefault();
-      setInstallPrompt(e);
-    };
-    const onInstalled = () => {
-      setInstallPrompt(null);
-      setIsInstalled(true);
-    };
-    window.addEventListener("beforeinstallprompt", onBeforeInstall);
-    window.addEventListener("appinstalled", onInstalled);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
-      window.removeEventListener("appinstalled", onInstalled);
-    };
-  }, []);
+  // PWA install prompt — see usePwaInstall.
+  const { installPrompt, isInstalled, promptInstall } = usePwaInstall();
 
   const { toast, toastType, toastFading, showToast } = useToast();
   const updateAvailable = useUpdateCheck();
-
-  // Routes state
-  const [routes, setRoutes] = useState(null);
-  const [routesLoading, setRoutesLoading] = useState(false);
-  const [selectedRoute, setSelectedRoute] = useState(null);
-  const [routeStops, setRouteStops] = useState(null);
-  const [routeShape, setRouteShape] = useState(null);
-  const [routeStopsLoading, setRouteStopsLoading] = useState(false);
 
   const {
     arrivals,
@@ -99,6 +103,19 @@ function App() {
     lastUpdated,
     clearArrivals,
   } = useArrivals();
+
+  // Routes-tab data (list fetch, selected route, stops/shape) — see useRoutes.
+  const {
+    routes,
+    setRoutes,
+    routesLoading,
+    selectedRoute,
+    routeStops,
+    routeShape,
+    routeStopsLoading,
+    fetchRouteStops,
+    clearRouteSelection,
+  } = useRoutes(setError, activeTab === "routes");
 
   const {
     favorites,
@@ -189,17 +206,6 @@ function App() {
       );
     }
   }, [settings.searchRadius, userLocation, refindNearbyStops]);
-
-  // Fetch routes list when routes tab is first opened. The guard inside the
-  // effect prevents duplicate fetches; depending on routes/routesLoading here
-  // would risk a refetch loop on persistent failure, so they're intentionally
-  // omitted from the dep array.
-  useEffect(() => {
-    if (activeTab === "routes" && !routes && !routesLoading) {
-      fetchRoutes();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab]);
 
   // ── Deep links ────────────────────────────────────────────────────────────
   // Restore state from the URL on launch: /?stop=45 opens that stop's
@@ -324,9 +330,7 @@ function App() {
 
   // Deselect the route on the routes tab.
   const clearSelectedRoute = () => {
-    setSelectedRoute(null);
-    setRouteStops(null);
-    setRouteShape(null);
+    clearRouteSelection();
     setRouteMapView(false);
   };
 
@@ -345,34 +349,6 @@ function App() {
     }
   };
   // ──────────────────────────────────────────────────────────────────────────
-
-  const fetchRoutes = async () => {
-    setRoutesLoading(true);
-    try {
-      const res = await fetch(`${API_BASE}/api/routes`);
-      const data = await res.json();
-      setRoutes(data.routes);
-    } catch {
-      setError("Could not load routes.");
-    } finally {
-      setRoutesLoading(false);
-    }
-  };
-
-  const fetchRouteStops = async (route) => {
-    setSelectedRoute(route);
-    setRouteStopsLoading(true);
-    try {
-      const res = await fetch(`${API_BASE}/api/route/${route.route_id}/stops`);
-      const data = await res.json();
-      setRouteStops(data.stops);
-      setRouteShape(data.shape || null);
-    } catch {
-      setError("Could not load stops for this route.");
-    } finally {
-      setRouteStopsLoading(false);
-    }
-  };
 
   const filteredRoutes = routes
     ? routes.filter((r) => {
@@ -453,6 +429,27 @@ function App() {
       setStopSearchQuery("");
       clearNearbyStops();
     },
+  };
+
+  // Shared map props — the desktop panel and the mobile overlays render the
+  // same maps; only the stop-tap callbacks differ, and those stay inline at
+  // each call site because their semantics are deliberately different.
+  const trackingMapProps = {
+    busLocation,
+    userLocation,
+    selectedBus,
+    busShape,
+    tripStops,
+    initialCenter: trackingMapCenter,
+    onMapMove: setTrackingMapCenter,
+  };
+
+  const routeMapProps = {
+    shape: routeShape,
+    stops: routeStops,
+    selectedStopId: arrivals && arrivalsTab === "routes" ? currentStop?.id : null,
+    userLocation,
+    fullHeight: true,
   };
 
   // ── PWA system back button ────────────────────────────────────────────────
@@ -552,15 +549,7 @@ function App() {
           }}
           installPrompt={installPrompt}
           isInstalled={isInstalled}
-          onInstall={async () => {
-            if (!installPrompt) return;
-            installPrompt.prompt();
-            const { outcome } = await installPrompt.userChoice;
-            if (outcome === "accepted") {
-              setInstallPrompt(null);
-              setIsInstalled(true);
-            }
-          }}
+          onInstall={promptInstall}
         />
       )}
 
@@ -776,22 +765,15 @@ function App() {
           {trackingView && busLocation ? (
             <>
               <div className={styles.desktopSearch}>
-                <div className={styles.topBarSearch}>
-                  <BackButton label="Back to map" onClick={exitTracking} />
-                  <span className={styles.trackingLabel}>
-                    Route {busLocation.route_short_name} — {busLocation.headsign}
-                  </span>
-                </div>
+                <PanelHeader
+                  backLabel="Back to map"
+                  onBack={exitTracking}
+                  title={`Route ${busLocation.route_short_name} — ${busLocation.headsign}`}
+                />
               </div>
               <div style={{ flex: 1, minHeight: 0 }}>
                 <BusTrackingMap
-                  busLocation={busLocation}
-                  userLocation={userLocation}
-                  selectedBus={selectedBus}
-                  busShape={busShape}
-                  tripStops={tripStops}
-                  initialCenter={trackingMapCenter}
-                  onMapMove={setTrackingMapCenter}
+                  {...trackingMapProps}
                   onGetArrivals={(stopId) => {
                     // Keep trackingView + busLocation intact so the mapPanel
                     // stays on BusTrackingMap — same pattern as RouteMap.
@@ -807,14 +789,8 @@ function App() {
             </>
           ) : activeTab === "routes" && selectedRoute ? (
             <RouteMap
-              shape={routeShape}
-              stops={routeStops}
-              selectedStopId={
-                arrivals && arrivalsTab === "routes" ? currentStop?.id : null
-              }
-              userLocation={userLocation}
+              {...routeMapProps}
               onSelectStop={(stopId) => handleFetchArrivals(stopId, "routes")}
-              fullHeight
             />
           ) : (
             <NearbyStopsMap
@@ -839,34 +815,17 @@ function App() {
           Leaflet container on desktop doesn't error on init */}
       <ErrorBoundary>
         {isMobile && trackingView && busLocation && (
-          <div
-            className={styles.mobileTrackingOverlay}
-            style={{
-              position: "fixed",
-              inset: 0,
-              background: "var(--bg)",
-              zIndex: 1100,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <MobileOverlay className={styles.mobileTrackingOverlay}>
             <div className={styles.topBar}>
-              <div className={styles.topBarSearch}>
-                <BackButton label="Back to arrivals" onClick={exitTracking} />
-                <span className={styles.trackingLabel}>
-                  Route {busLocation.route_short_name} — {busLocation.headsign}
-                </span>
-              </div>
+              <PanelHeader
+                backLabel="Back to arrivals"
+                onBack={exitTracking}
+                title={`Route ${busLocation.route_short_name} — ${busLocation.headsign}`}
+              />
             </div>
             <div style={{ flex: 1, height: 0 }}>
               <BusTrackingMap
-                busLocation={busLocation}
-                userLocation={userLocation}
-                selectedBus={selectedBus}
-                busShape={busShape}
-                tripStops={tripStops}
-                initialCenter={trackingMapCenter}
-                onMapMove={setTrackingMapCenter}
+                {...trackingMapProps}
                 onGetArrivals={(stopId) => {
                   setNearbyStopStack([]);
                   // Close the overlay so arrivals are visible, but keep
@@ -880,50 +839,31 @@ function App() {
                 }}
               />
             </div>
-          </div>
+          </MobileOverlay>
         )}
       </ErrorBoundary>
 
       {/* Mobile route-map overlay */}
       <ErrorBoundary>
         {isMobile && routeMapView && selectedRoute && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              background: "var(--bg)",
-              zIndex: 1100,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <MobileOverlay>
             <div className={styles.topBar}>
-              <div className={styles.topBarSearch}>
-                <BackButton
-                  label="Back to stops"
-                  onClick={() => setRouteMapView(false)}
-                />
-                <span className={styles.trackingLabel}>
-                  Route {selectedRoute.route_short_name} — {selectedRoute.route_long_name}
-                </span>
-              </div>
+              <PanelHeader
+                backLabel="Back to stops"
+                onBack={() => setRouteMapView(false)}
+                title={`Route ${selectedRoute.route_short_name} — ${selectedRoute.route_long_name}`}
+              />
             </div>
             <div style={{ flex: 1, height: 0 }}>
               <RouteMap
-                shape={routeShape}
-                stops={routeStops}
-                selectedStopId={
-                  arrivals && arrivalsTab === "routes" ? currentStop?.id : null
-                }
-                userLocation={userLocation}
+                {...routeMapProps}
                 onSelectStop={(stopId) => {
                   setRouteMapView(false);
                   handleFetchArrivals(stopId, "routes");
                 }}
-                fullHeight
               />
             </div>
-          </div>
+          </MobileOverlay>
         )}
       </ErrorBoundary>
 
