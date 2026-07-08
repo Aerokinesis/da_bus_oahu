@@ -287,6 +287,14 @@ function App() {
   // in stop searches (e.g. 123 -> 986 -> 442) returns to the nearby map in a
   // single tap instead of stepping back through each previous stop.
   const goHome = () => {
+    // Two-stage Home: from another tab, just return to the nearby tab as it
+    // was left — a settings/routes detour must not wipe an open stop. Only a
+    // tap while ALREADY on nearby performs the full clean-home reset below.
+    if (activeTab !== "nearby") {
+      setFaqView(false);
+      setActiveTab("nearby");
+      return;
+    }
     clearBusTracking();
     setTrackingView(false);
     clearArrivals();
@@ -319,6 +327,10 @@ function App() {
       clearArrivals();
       setStopSearchQuery("");
     } else {
+      // Desktop: also dismiss any active tracking so the map panel returns
+      // to nearby stops — back to home means all the way home.
+      clearBusTracking();
+      setTrackingView(false);
       clearArrivals();
       setNearbyStopStack([]);
       setStopSearchQuery("");
@@ -523,6 +535,10 @@ function App() {
             onRemoveFavorite={(stopId) => {
               removeFavorite(stopId);
               showToast("Stop removed", "remove");
+            }}
+            onClearFavorites={() => {
+              clearFavorites();
+              showToast("Favorites cleared", "remove");
             }}
           />
         )}
@@ -887,9 +903,11 @@ function App() {
         </div>
         <button
           className={`${styles.navBtn} ${activeTab === "nearby" ? styles.active : ""}`}
+          aria-current={activeTab === "nearby" ? "page" : undefined}
           onClick={goHome}
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -904,9 +922,11 @@ function App() {
 
         <button
           className={`${styles.navBtn} ${activeTab === "routes" ? styles.active : ""}`}
+          aria-current={activeTab === "routes" ? "page" : undefined}
           onClick={() => switchTab("routes")}
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -925,9 +945,11 @@ function App() {
 
         <button
           className={`${styles.navBtn} ${activeTab === "history" ? styles.active : ""}`}
+          aria-current={activeTab === "history" ? "page" : undefined}
           onClick={() => switchTab("history")}
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -942,9 +964,11 @@ function App() {
 
         <button
           className={`${styles.navBtn} ${activeTab === "favorites" ? styles.active : ""}`}
+          aria-current={activeTab === "favorites" ? "page" : undefined}
           onClick={() => switchTab("favorites")}
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -958,9 +982,11 @@ function App() {
 
         <button
           className={`${styles.navBtn} ${activeTab === "settings" ? styles.active : ""}`}
+          aria-current={activeTab === "settings" ? "page" : undefined}
           onClick={() => switchTab("settings")}
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"

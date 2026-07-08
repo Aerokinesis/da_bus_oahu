@@ -1,7 +1,7 @@
 .backBtn {
   background: none;
   border: none;
-  color: var(--primary);
+  color: var(--primary-text);
   font-size: 14px;
   cursor: pointer;
   padding: 0 0 12px 0;
@@ -96,6 +96,9 @@
 }
 
 .routeRow {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -107,11 +110,13 @@
 }
 
 .routeRowName {
+  display: block;
   font-size: 13px;
   color: var(--text);
 }
 
 .routeRowDesc {
+  display: block;
   font-size: 11px;
   color: var(--text-muted);
   margin-top: 2px;
@@ -148,7 +153,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  color: var(--primary);
+  color: var(--primary-text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;

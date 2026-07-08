@@ -43,8 +43,8 @@
 }
 
 .saveBtn.saved {
-  color: #f87171;
-  border-color: #f87171;
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 .lastUpdatedRow {
@@ -138,10 +138,16 @@
   border-radius: 4px;
 }
 
+/* Arrival times render as a tinted chip in both themes (a11y audit
+   finding #1). Light: #92400e on #fef3c7, 6.37:1. Dark: brand gold
+   #e8b84b on #3b2c06, 7.35:1. Vars live in index.css. */
 .time {
   font-size: 15px;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--time-chip-text);
+  background: var(--time-chip-bg);
+  padding: 2px 9px;
+  border-radius: 999px;
   flex-shrink: 0;
 }
 
@@ -153,6 +159,9 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--arrived-text);
+  background: var(--arrived-bg);
+  padding: 2px 9px;
+  border-radius: 999px;
   flex-shrink: 0;
 }
 
@@ -201,7 +210,7 @@
   background: none;
   border: 1px solid var(--border);
   border-radius: 6px;
-  color: var(--primary);
+  color: var(--primary-text);
   font-size: 13px;
   padding: 10px 16px;
   min-height: 44px;
@@ -245,7 +254,7 @@
 .backBtn {
   background: none;
   border: none;
-  color: var(--primary);
+  color: var(--primary-text);
   font-size: 14px;
   cursor: pointer;
   padding: 0 0 12px 0;

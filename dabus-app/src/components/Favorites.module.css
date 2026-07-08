@@ -11,6 +11,34 @@
   text-align: center;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.clearBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clearBtn:hover {
+  color: var(--text);
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -22,6 +50,11 @@
 }
 
 .info {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -61,13 +94,26 @@
 }
 
 .removeBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   background: none;
   border: none;
+  border-radius: 6px;
   color: var(--text-muted);
-  font-size: 18px;
   cursor: pointer;
-  flex-shrink: 0;
-  padding: 4px;
+}
+
+.removeBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.removeBtn:hover {
+  color: var(--text);
 }
 
 .removeBtn:active {

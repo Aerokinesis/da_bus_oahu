@@ -127,7 +127,7 @@ function SaveStopModal({ stop, onSave, onCancel }) {
               id="save-stop-counter"
               style={{
                 fontSize: "11px",
-                color: isOverLimit || remaining <= 5 ? "#f87171" : "var(--text-muted)",
+                color: isOverLimit || remaining <= 5 ? "var(--danger)" : "var(--text-muted)",
                 margin: 0,
                 flexShrink: 0,
               }}

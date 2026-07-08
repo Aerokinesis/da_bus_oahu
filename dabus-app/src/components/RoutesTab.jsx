@@ -126,16 +126,17 @@ function RoutesTab({
                 : [];
               const badgeLabel = summarizeBadge(routeAlerts);
               return (
-                <div
+                <button
+                  type="button"
                   key={route.route_id}
                   className={styles.routeRow}
                   onClick={() => onSelectRoute(route)}
                 >
-                  <div className={styles.routeBadge}>
+                  <span className={styles.routeBadge}>
                     {route.route_short_name}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div className={styles.routeRowName}>
+                  </span>
+                  <span style={{ flex: 1 }}>
+                    <span className={styles.routeRowName}>
                       {route.route_long_name}
                       {badgeLabel && (
                         <span
@@ -145,15 +146,15 @@ function RoutesTab({
                           {badgeLabel}
                         </span>
                       )}
-                    </div>
+                    </span>
                     {route.route_description && (
-                      <div className={styles.routeRowDesc}>
+                      <span className={styles.routeRowDesc}>
                         {route.route_description}
-                      </div>
+                      </span>
                     )}
-                  </div>
+                  </span>
                   <span className={styles.arrow} aria-hidden="true">›</span>
-                </div>
+                </button>
               );
             })}
           </div>

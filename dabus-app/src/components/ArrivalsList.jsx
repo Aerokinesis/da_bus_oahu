@@ -63,7 +63,7 @@ function ArrivalsList({
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{
-                color: isFavorited ? "#f87171" : "currentColor",
+                color: isFavorited ? "var(--danger)" : "currentColor",
                 flexShrink: 0,
               }}
             >

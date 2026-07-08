@@ -106,6 +106,11 @@ function AddressSearch({
                 type="button"
                 className="dabus-result-item"
                 onMouseDown={(e) => { e.preventDefault(); onSelectStop(stop.stop_id); }}
+                onClick={(e) => {
+                  // Keyboard Enter/Space dispatches click with detail 0; mouse
+                  // taps were already handled by onMouseDown above (detail > 0).
+                  if (e.detail === 0) onSelectStop(stop.stop_id);
+                }}
                 onTouchStart={(e) => {
                   touchStateRef.current = { startY: e.touches[0].clientY, scrolled: false };
                 }}

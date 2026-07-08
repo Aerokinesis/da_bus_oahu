@@ -87,7 +87,7 @@
 
 .sliderVal {
   font-size: 13px;
-  color: var(--primary);
+  color: var(--primary-text);
   font-weight: 500;
   flex-shrink: 0;
 }
@@ -133,7 +133,7 @@
   padding: 12px 14px;
   background: none;
   border: none;
-  color: #f87171;
+  color: var(--danger);
   font-size: 13px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   text-align: left;
@@ -142,7 +142,7 @@
 }
 
 .dangerBtn:active {
-  background: #2a1215;
+  background: var(--danger-bg);
 }
 
 .aboutRow {
@@ -182,7 +182,7 @@
 }
 
 .legalLink {
-  color: var(--primary);
+  color: var(--primary-text);
   text-decoration: none;
 }
 

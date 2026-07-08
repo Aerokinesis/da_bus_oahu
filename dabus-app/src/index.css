@@ -29,6 +29,15 @@
   --arrived-text: #f472b6;
 
   --control-h: 44px;
+
+  /* WCAG 1.4.3 text-safe variants (docs/accessibility-audit-2026-07-08.md) */
+  --primary-text: #4f9fd8;
+  --accent-text: #e8b84b;
+  --danger: #f87171;
+  --danger-bg: #2a1215;
+
+  --time-chip-bg: #3b2c06;
+  --time-chip-text: #e8b84b;
 }
 
 html,
@@ -102,6 +111,14 @@ p {
   --sched-text: #3730a3;
   --arrived-bg: #fce7f3;
   --arrived-text: #9d174d;
+
+  --primary-text: #1a6faf;
+  --accent-text: #b45309;
+  --danger: #b91c1c;
+  --danger-bg: #fee2e2;
+
+  --time-chip-bg: #fef3c7;
+  --time-chip-text: #92400e;
 }
 
 [data-theme="dark"] {
@@ -112,6 +129,14 @@ p {
   --text: #f0f0f0;
   --text-muted: #888;
   --border: #6e6e73;   /* WCAG 1.4.11: 3:1+ against --bg #18181B */
+
+  --primary-text: #4f9fd8;
+  --accent-text: #e8b84b;
+  --danger: #f87171;
+  --danger-bg: #2a1215;
+
+  --time-chip-bg: #3b2c06;
+  --time-chip-text: #e8b84b;
 }
 
 /* Accessibility: visible focus indicator for keyboard navigation.
