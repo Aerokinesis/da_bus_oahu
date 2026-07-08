@@ -43,14 +43,6 @@
 html,
 body {
   height: 100%;
-  /* App shell: the document itself must never scroll — only .main does.
-     Without this, the 100% (html) vs 100dvh (.shell) mismatch leaves a few
-     pixels of document overflow; scrolling it makes Chrome retract its
-     edge-to-edge bottom chin and the nav bar slides behind the Android
-     system navigation (seen on the Settings tab). overscroll-behavior
-     stops internal scroll containers from chaining to the document. */
-  overflow: hidden;
-  overscroll-behavior: none;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
