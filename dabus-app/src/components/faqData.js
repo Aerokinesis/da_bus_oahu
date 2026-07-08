@@ -19,7 +19,7 @@ const FAQ_SECTIONS = [
       },
       {
         q: "How do I save a stop?",
-        a: "Open a stop's arrivals and tap the heart. You can give it a custom name like Home or Work, and it will show up in the Favorites tab.",
+        a: "Open a stop's arrivals and tap the star. You can give it a custom name like Home or Work, and it will show up in the Favorites tab.",
       },
       {
         q: "Can I see where my bus is right now?",
@@ -65,6 +65,31 @@ const FAQ_SECTIONS = [
       {
         q: "Are these fares current?",
         a: "Fares shown are effective July 1, 2026. Prices can change — check thebus.org for the latest official fare information.",
+      },
+    ],
+  },
+  {
+    title: "Reduced fares",
+    items: [
+      {
+        q: "Who qualifies for reduced fares?",
+        a: "Youth age 6-17 (including high school students up to 19 with a valid school ID), seniors 65 and older, people with disabilities, U.S. Medicare cardholders under 65, Handi-Van-eligible riders, and riders approved for the City's low-income fare program. All reduced fares require a Reduced Fare HOLO card, with documentation plus a valid government-issued photo ID showing your date of birth.",
+      },
+      {
+        q: "What are the youth fares?",
+        a: "With a Youth HOLO card: cash fare $1.75, 2-hour pass $1.50, 24-hour pass and day cap $3.75, monthly pass or cap $45.00, annual pass $495.00. Youth cards expire on June 30 after the rider turns 18 - students 18 or 19 need proof of high school enrollment.",
+      },
+      {
+        q: "What are the senior fares?",
+        a: "With a Senior HOLO card (65+): cash fare $1.50, 2-hour pass $1.25, 24-hour pass and day cap $3.00. Hawaii residents (Kamaaina, verified with a Hawaii driver's license or State ID) also get a $20.00 monthly pass or cap and a $45.00 annual pass.",
+      },
+      {
+        q: "What are the disability, Medicare, and Handi-Van fares?",
+        a: "All three match the senior rates: cash fare $1.50, 2-hour pass $1.25, 24-hour pass and day cap $3.00. The $20.00 monthly pass or cap and $45.00 annual pass are available to Hawaii residents (Kamaaina) and all Handi-Van cardholders. Medicare HOLO cards are renewed every 4 years, temporary disability fares end when the prescribed period ends, and a Handi-Van pass can't extend past your Handi-Van eligibility.",
+      },
+      {
+        q: "How do I get a Reduced Fare HOLO card?",
+        a: "Youth and Senior cards are issued at Satellite City Halls (except the Ala Moana Center location) and the Transit Pass Office. Disability, Medicare, and Handi-Van cards go through the Kalihi Transit Pass Office and have their own application forms. Application forms and details are on thebus.org under Fares & Passes.",
       },
     ],
   },
