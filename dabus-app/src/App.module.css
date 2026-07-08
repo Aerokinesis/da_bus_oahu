@@ -49,6 +49,8 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: visible;
+  /* Don't chain overscroll to the document (keeps Chrome's chin pinned). */
+  overscroll-behavior-y: contain;
   padding: 16px;
 }
 
