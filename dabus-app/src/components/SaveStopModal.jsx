@@ -59,8 +59,12 @@ function SaveStopModal({ stop, onSave, onCancel }) {
         bottom: 0,
         background: "rgba(0,0,0,0.6)",
         display: "flex",
-        alignItems: "center",
+        // Top-anchored, not centered: the Android keyboard only shrinks the
+        // visual viewport, so a vertically-centered fixed dialog gets its
+        // bottom half (the buttons) hidden behind the keyboard.
+        alignItems: "flex-start",
         justifyContent: "center",
+        paddingTop: "8vh",
         zIndex: 1000,
       }}
     >
