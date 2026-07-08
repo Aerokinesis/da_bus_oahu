@@ -19,7 +19,7 @@ const FAQ_SECTIONS = [
       },
       {
         q: "How do I save a stop?",
-        a: "Open a stop's arrivals and tap the star. You can give it a custom name like Home or Work, and it will show up in the Favorites tab.",
+        a: "Open a stop's arrivals and tap the heart. You can give it a custom name like Home or Work, and it will show up in the Favorites tab.",
       },
       {
         q: "Can I see where my bus is right now?",
