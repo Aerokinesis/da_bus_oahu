@@ -13,6 +13,7 @@ import StopHistory from "./components/StopHistory";
 import RoutesTab from "./components/RoutesTab";
 import RouteMap from "./components/RouteMap";
 import SettingsTab from "./components/SettingsTab";
+import FaqScreen from "./components/FaqScreen";
 import Toast from "./components/Toast";
 import SearchInput from "./components/SearchInput";
 import BackButton from "./components/BackButton";
@@ -82,6 +83,9 @@ function App() {
   const [activeTab, setActiveTab] = useState("nearby");
   const [trackingView, setTrackingView] = useState(false);
   const [routeMapView, setRouteMapView] = useState(false);
+  // Settings -> FAQ sub-screen. Lives here (not in SettingsTab) so it can feed
+  // isDeep/handleSystemBack below and system back closes it instead of the app.
+  const [faqView, setFaqView] = useState(false);
   const [arrivalsTab, setArrivalsTab] = useState(null);
   // Stop IDs previously visited on the nearby tab — used to navigate back.
   const [nearbyStopStack, setNearbyStopStack] = useState([]);
@@ -274,6 +278,7 @@ function App() {
   const switchTab = (tab) => {
     clearBusTracking();
     setTrackingView(false);
+    setFaqView(false);
     setActiveTab(tab);
   };
 
@@ -288,6 +293,7 @@ function App() {
     setArrivalsTab(null);
     setNearbyStopStack([]);
     setStopSearchQuery("");
+    setFaqView(false);
     setActiveTab("nearby");
   };
 
@@ -458,7 +464,8 @@ function App() {
     (trackingView && !!busLocation) ||
     routeMapView ||
     (!!arrivals && arrivalsTab === activeTab) ||
-    (activeTab === "routes" && !!selectedRoute);
+    (activeTab === "routes" && !!selectedRoute) ||
+    (activeTab === "settings" && faqView);
 
   // Performs ONE in-app back step (deeper → shallower → home tab).
   // Recreated every render so it always sees fresh state; useAndroidBack
@@ -480,6 +487,8 @@ function App() {
     } else if (activeTab === "routes" && selectedRoute) {
       clearSelectedRoute();
       clearArrivals();
+    } else if (activeTab === "settings" && faqView) {
+      setFaqView(false);
     } else if (activeTab !== "nearby") {
       // Base level of a non-home tab — go back to home.
       setActiveTab("nearby");
@@ -538,20 +547,24 @@ function App() {
         />
       )}
 
-      {activeTab === "settings" && (
-        <SettingsTab
-          settings={settings}
-          onUpdateSetting={updateSetting}
-          onClearHistory={clearHistory}
-          onClearFavorites={() => {
-            clearFavorites();
-            showToast("Favorites cleared", "remove");
-          }}
-          installPrompt={installPrompt}
-          isInstalled={isInstalled}
-          onInstall={promptInstall}
-        />
-      )}
+      {activeTab === "settings" &&
+        (faqView ? (
+          <FaqScreen onBack={() => setFaqView(false)} />
+        ) : (
+          <SettingsTab
+            settings={settings}
+            onUpdateSetting={updateSetting}
+            onClearHistory={clearHistory}
+            onClearFavorites={() => {
+              clearFavorites();
+              showToast("Favorites cleared", "remove");
+            }}
+            installPrompt={installPrompt}
+            isInstalled={isInstalled}
+            onInstall={promptInstall}
+            onOpenFaq={() => setFaqView(true)}
+          />
+        ))}
 
       {loading && <p>Loading arrivals...</p>}
       {error && <p role="alert">{error}</p>}
