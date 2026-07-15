@@ -58,19 +58,6 @@ body {
   display: flex;
   flex-direction: column;
 
-  /* Mobile: centered narrow shell */
-  max-width: 480px;
-  margin: 0 auto;
-  border-inline: 1px solid var(--border);
-}
-
-/* Desktop: fill the full viewport */
-@media (min-width: 768px) {
-  #root {
-    max-width: 100%;
-    margin: 0;
-    border-inline: none;
-  }
 }
 
 .leaflet-container {
@@ -86,14 +73,6 @@ h3 {
 
 p {
   margin: 0;
-}
-
-@media (min-width: 768px) {
-  #root {
-    max-width: 100%;
-    margin: 0;
-    border-inline: none;
-  }
 }
 
 [data-theme="light"] {

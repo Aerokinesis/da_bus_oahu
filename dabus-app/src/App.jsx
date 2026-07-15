@@ -75,7 +75,7 @@ function MobileOverlay({ className, children }) {
 function App() {
   // Settings must be first — other hooks depend on settings.searchRadius
   const { settings, updateSetting } = useSettings();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 639px)");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [routeQuery, setRouteQuery] = useState("");

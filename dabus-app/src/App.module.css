@@ -1,7 +1,13 @@
 .shell {
+  /* Pin to the live viewport instead of sizing with 100dvh: after a
+     location.reload() in an installed Android PWA, Chrome can report a
+     stale dvh that includes the area behind the system gesture bar,
+     pushing the bottom nav under it. Fixed inset:0 always tracks the
+     real visible viewport. */
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  height: 100dvh;
 }
 
 .topBar {
@@ -106,7 +112,7 @@
   display: flex;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .shell {
     flex-direction: row;
     overflow: hidden;
@@ -155,7 +161,7 @@
   }
 
   .main {
-    flex: 0 0 340px;
+    flex: 0 0 clamp(280px, 44vw, 340px);
     padding: 0;
     border-right: 1px solid var(--border);
     display: flex;
@@ -199,7 +205,7 @@
   display: flex;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .mobileTrackingOverlay {
     display: none !important;
   }
@@ -209,7 +215,7 @@
   display: block;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .mobileMapOnly {
     display: none;
   }
@@ -227,7 +233,7 @@
   text-overflow: ellipsis;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .trackingLabel {
     white-space: normal;
     overflow: visible;

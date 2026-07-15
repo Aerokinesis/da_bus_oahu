@@ -30,7 +30,7 @@
 }
 
 /* Hide mobile map on desktop; desktop panel handles it */
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .mapWrapper {
     display: none;
   }
@@ -43,7 +43,7 @@
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .mapWrapper {
     display: none;
   }
