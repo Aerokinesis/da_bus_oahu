@@ -30,6 +30,9 @@ function SearchInput({ value, onChange, placeholder, onClear, onSubmit, ariaLabe
       {value && (
         <button
           className={styles.clearBtn}
+          // Prevent the tap from moving focus to the button: the input would
+          // blur and the on-screen keyboard would close. Click still fires.
+          onPointerDown={(e) => e.preventDefault()}
           onClick={onClear}
           aria-label="Clear search"
         >
