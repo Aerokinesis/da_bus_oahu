@@ -32,6 +32,9 @@ import { useMediaQuery } from "./hooks/useMediaQuery";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 import { useRoutes } from "./hooks/useRoutes";
 import { useAlerts } from "./hooks/useAlerts";
+import { useHomeArrivals } from "./hooks/useHomeArrivals";
+import FavoritesStrip from "./components/FavoritesStrip";
+import NearestStopCard from "./components/NearestStopCard";
 import { API_BASE } from "./constants";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -168,6 +171,17 @@ function App() {
 
   const [mapCenter, setMapCenter] = useState(null);
   const [trackingMapCenter, setTrackingMapCenter] = useState(null);
+
+  // Home-screen glance: next arrivals for the first three favorites and the
+  // nearest stop, fetched only while the home map view is showing.
+  const showHomeGlance = activeTab === "nearby" && (!arrivals || arrivalsTab !== "nearby");
+  const nearestHomeStop = nearbyStopsMap?.[0] ?? null;
+  const homeGlanceIds = [
+    ...new Set(
+      [...favorites.slice(0, 3).map((f) => f.stop_id), nearestHomeStop?.stop_id].filter(Boolean),
+    ),
+  ].join(",");
+  const homeArrivals = useHomeArrivals(homeGlanceIds, showHomeGlance);
 
   // Refetch nearby stops whenever the radius or user's location changes.
   // Runs regardless of active tab so changes from Settings take effect before
@@ -768,20 +782,33 @@ function App() {
 
         <div className={styles.desktopContent}>
           {/* Nearby map — mobile only (desktop uses mapPanel) */}
-          {activeTab === "nearby" && (!arrivals || arrivalsTab !== "nearby") && (
-            <div className={styles.mobileMapOnly}>
-              <NearbyStopsMap
-                userLocation={userLocation}
-                nearbyStopsMap={nearbyStopsMap}
+          {showHomeGlance && (
+            <>
+              <FavoritesStrip
+                favorites={favorites}
+                arrivalsByStop={homeArrivals}
                 onSelectStop={(stopId) => handleFetchArrivals(stopId, "nearby")}
-                onMount={findNearbyStops}
-                mapCenter={mapCenter}
-                onMapMove={setMapCenter}
-                searchRadius={settings.searchRadius}
-                onRefreshLocation={findNearbyStops}
-                locating={locating}
+                onSeeAll={() => switchTab("favorites")}
               />
-            </div>
+              <div className={styles.mobileMapOnly}>
+                <NearbyStopsMap
+                  userLocation={userLocation}
+                  nearbyStopsMap={nearbyStopsMap}
+                  onSelectStop={(stopId) => handleFetchArrivals(stopId, "nearby")}
+                  onMount={findNearbyStops}
+                  mapCenter={mapCenter}
+                  onMapMove={setMapCenter}
+                  searchRadius={settings.searchRadius}
+                  onRefreshLocation={findNearbyStops}
+                  locating={locating}
+                />
+              </div>
+              <NearestStopCard
+                stop={nearestHomeStop}
+                arrivals={nearestHomeStop ? homeArrivals[nearestHomeStop.stop_id] : null}
+                onOpen={(stopId) => handleFetchArrivals(stopId, "nearby")}
+              />
+            </>
           )}
 
           {tabContent}
