@@ -9,8 +9,7 @@ function Toast({ message, type, fading, onClick, bottom = "80px" }) {
         }
       }}
       tabIndex={onClick ? 0 : undefined}
-      role={onClick ? "button" : "status"}
-      aria-live="polite"
+      role={onClick ? "button" : undefined}
       style={{
         cursor: onClick ? "pointer" : undefined,
         position: "fixed",

@@ -3,7 +3,7 @@ import { APP_VERSION } from "../constants";
 
 const RADIUS_OPTIONS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5];
 
-function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorites, installPrompt, isInstalled, onInstall, onOpenFaq }) {
+function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorites, installPrompt, isInstalled, onInstall, onOpenFaq, onOpenContact }) {
   const radiusIndex = RADIUS_OPTIONS.indexOf(settings.searchRadius);
   const sliderValue = radiusIndex === -1 ? 3 : radiusIndex;
 
@@ -121,6 +121,24 @@ function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorit
         <div className={styles.group}>
           <button className={styles.linkRow} onClick={onOpenFaq}>
             <span>Frequently Asked Questions</span>
+            <svg
+              className={styles.linkChevron}
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+          <div className={styles.divider} />
+          <button className={styles.linkRow} onClick={onOpenContact}>
+            <span>Contact / Send feedback</span>
             <svg
               className={styles.linkChevron}
               width="14"

@@ -274,6 +274,95 @@ app.get("/api/alerts", async (req, res) => {
     }
 })
 
+// ── Contact form ─────────────────────────────────────────────────────────────
+// Tighter bucket than the global /api limiter: contact spam is a thing.
+const contactLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many messages — please try again later." },
+})
+
+const CONTACT_CATEGORIES = { bug: "Bug report", feature: "Feature idea", other: "Feedback" }
+
+app.post("/api/contact", contactLimiter, express.json({ limit: "16kb" }), async (req, res) => {
+    const { message, email, category, website, appVersion, platform } = req.body || {}
+
+    // Honeypot: humans never see the field; bots fill every input.
+    // Pretend success so the bot moves on, deliver nothing.
+    if (typeof website === "string" && website.trim() !== "") {
+        return res.json({ ok: true })
+    }
+
+    if (typeof message !== "string" || message.trim().length < 10 || message.trim().length > 1000) {
+        return res.status(400).json({ error: "Message must be between 10 and 1000 characters." })
+    }
+    const cleanMessage = message.trim()
+
+    let cleanEmail = ""
+    if (email != null && String(email).trim() !== "") {
+        cleanEmail = String(email).trim()
+        if (cleanEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+            return res.status(400).json({ error: "That email address doesn't look valid." })
+        }
+    }
+
+    const cleanCategory = Object.prototype.hasOwnProperty.call(CONTACT_CATEGORIES, category) ? category : "other"
+    const cleanVersion = typeof appVersion === "string" ? appVersion.slice(0, 32) : "unknown"
+    const cleanPlatform = typeof platform === "string" ? platform.slice(0, 256) : "unknown"
+
+    const subject = `[DaBus] ${CONTACT_CATEGORIES[cleanCategory]}`
+    const text = [
+        cleanMessage,
+        "",
+        "———",
+        `Category: ${cleanCategory}`,
+        `From: ${cleanEmail || "(no email provided)"}`,
+        `App version: ${cleanVersion}`,
+        `Device: ${cleanPlatform}`,
+        `Received: ${new Date().toISOString()}`,
+    ].join("\n")
+
+    const apiKey = process.env.RESEND_API_KEY
+    const to = process.env.CONTACT_TO_EMAIL
+    if (!apiKey || !to) {
+        // Not configured (e.g. local dev) — log so the submission isn't lost.
+        console.log(`[contact] RESEND_API_KEY/CONTACT_TO_EMAIL not set — logging only:\n${subject}\n${text}`)
+        return res.json({ ok: true })
+    }
+
+    try {
+        const payload = {
+            // Resend's shared sender works without a verified domain, but can
+            // only deliver to the account owner's own email — exactly this case.
+            from: process.env.CONTACT_FROM_EMAIL || "DaBus <onboarding@resend.dev>",
+            to: [to],
+            subject,
+            text,
+        }
+        if (cleanEmail) payload.reply_to = cleanEmail
+
+        const r = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        })
+        if (!r.ok) {
+            const detail = await r.text().catch(() => "")
+            console.error(`[contact] Resend error ${r.status}: ${detail}`)
+            return res.status(502).json({ error: "Could not send your message. Please try again later." })
+        }
+        res.json({ ok: true })
+    } catch (err) {
+        console.error("[contact] send failed:", err)
+        res.status(502).json({ error: "Could not send your message. Please try again later." })
+    }
+})
+
 const PORT = process.env.PORT || 3001
 const USE_HTTPS = process.env.USE_HTTPS !== "false"
 

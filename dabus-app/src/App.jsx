@@ -9,11 +9,13 @@ import BusTrackingMap from "./components/BusTrackingMap";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Favorites from "./components/Favorites";
 import SaveStopModal from "./components/SaveStopModal";
+import ConfirmDialog from "./components/ConfirmDialog";
 import StopHistory from "./components/StopHistory";
 import RoutesTab from "./components/RoutesTab";
 import RouteMap from "./components/RouteMap";
 import SettingsTab from "./components/SettingsTab";
 import FaqScreen from "./components/FaqScreen";
+import ContactScreen from "./components/ContactScreen";
 import Toast from "./components/Toast";
 import SearchInput from "./components/SearchInput";
 import BackButton from "./components/BackButton";
@@ -80,12 +82,14 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [routeQuery, setRouteQuery] = useState("");
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(null); // "history" | "favorites" | null
   const [activeTab, setActiveTab] = useState("nearby");
   const [trackingView, setTrackingView] = useState(false);
   const [routeMapView, setRouteMapView] = useState(false);
   // Settings -> FAQ sub-screen. Lives here (not in SettingsTab) so it can feed
   // isDeep/handleSystemBack below and system back closes it instead of the app.
   const [faqView, setFaqView] = useState(false);
+  const [contactView, setContactView] = useState(false);
   const [arrivalsTab, setArrivalsTab] = useState(null);
   // Stop IDs previously visited on the nearby tab — used to navigate back.
   const [nearbyStopStack, setNearbyStopStack] = useState([]);
@@ -480,7 +484,7 @@ function App() {
     routeMapView ||
     (!!arrivals && arrivalsTab === activeTab) ||
     (activeTab === "routes" && !!selectedRoute) ||
-    (activeTab === "settings" && faqView);
+    (activeTab === "settings" && (faqView || contactView));
 
   // Performs ONE in-app back step (deeper → shallower → home tab).
   // Recreated every render so it always sees fresh state; useAndroidBack
@@ -502,8 +506,9 @@ function App() {
     } else if (activeTab === "routes" && selectedRoute) {
       clearSelectedRoute();
       clearArrivals();
-    } else if (activeTab === "settings" && faqView) {
+    } else if (activeTab === "settings" && (faqView || contactView)) {
       setFaqView(false);
+      setContactView(false);
     } else if (activeTab !== "nearby") {
       // Base level of a non-home tab — go back to home.
       setActiveTab("nearby");
@@ -517,6 +522,18 @@ function App() {
     showToast,
   });
 
+  // Clear-all guardrail: every entry point (Recents screen, Favorites edit
+  // mode, both Settings buttons) routes through a confirm dialog instead of
+  // clearing immediately.
+  const requestClearHistory = () => {
+    if (stopHistory.length === 0) return showToast("No recent stops to clear", "info");
+    setConfirmClear("history");
+  };
+  const requestClearFavorites = () => {
+    if (favorites.length === 0) return showToast("No favorites to clear", "info");
+    setConfirmClear("favorites");
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
 
   const tabContent = (
@@ -526,7 +543,7 @@ function App() {
           stopHistory={stopHistory}
           onSelectStop={(stopId) => handleFetchArrivals(stopId, "history")}
           onRemoveStop={removeFromHistory}
-          onClearHistory={clearHistory}
+          onClearHistory={requestClearHistory}
         />
       )}
 
@@ -540,10 +557,7 @@ function App() {
               removeFavorite(stopId);
               showToast("Stop removed", "remove");
             }}
-            onClearFavorites={() => {
-              clearFavorites();
-              showToast("Favorites cleared", "remove");
-            }}
+            onClearFavorites={requestClearFavorites}
           />
         )}
 
@@ -570,19 +584,19 @@ function App() {
       {activeTab === "settings" &&
         (faqView ? (
           <FaqScreen onBack={() => setFaqView(false)} />
+        ) : contactView ? (
+          <ContactScreen onBack={() => setContactView(false)} />
         ) : (
           <SettingsTab
             settings={settings}
             onUpdateSetting={updateSetting}
-            onClearHistory={clearHistory}
-            onClearFavorites={() => {
-              clearFavorites();
-              showToast("Favorites cleared", "remove");
-            }}
+            onClearHistory={requestClearHistory}
+            onClearFavorites={requestClearFavorites}
             installPrompt={installPrompt}
             isInstalled={isInstalled}
             onInstall={promptInstall}
             onOpenFaq={() => setFaqView(true)}
+            onOpenContact={() => setContactView(true)}
           />
         ))}
 
@@ -1032,20 +1046,52 @@ function App() {
         />
       )}
 
-      {toast && <Toast message={toast} type={toastType} fading={toastFading} />}
+      {confirmClear && (
+        <ConfirmDialog
+          title={confirmClear === "history" ? "Clear recent stops?" : "Clear all favorites?"}
+          message={
+            confirmClear === "history"
+              ? `This removes ${stopHistory.length} recent ${stopHistory.length === 1 ? "stop" : "stops"}. This can't be undone.`
+              : `This removes ${favorites.length} saved ${favorites.length === 1 ? "stop" : "stops"}. This can't be undone.`
+          }
+          confirmLabel={confirmClear === "history" ? "Clear recents" : "Clear favorites"}
+          onConfirm={() => {
+            if (confirmClear === "history") {
+              clearHistory();
+              showToast("Recents cleared", "remove");
+            } else {
+              clearFavorites();
+              showToast("Favorites cleared", "remove");
+            }
+            setConfirmClear(null);
+          }}
+          onCancel={() => setConfirmClear(null)}
+        />
+      )}
+
+      {/* Both toast slots live inside always-mounted live regions: screen
+          readers often skip announcements when the aria-live element is
+          inserted together with its content (WCAG 4.1.3), so the wrappers
+          persist and only the message comes and goes. Toast is
+          position:fixed — the empty wrappers have no visual footprint. */}
+      <div role="status" aria-live="polite">
+        {toast && <Toast message={toast} type={toastType} fading={toastFading} />}
+      </div>
 
       {/* Persistent until tapped; sits above the regular toast slot so the
           two never overlap. Reload fetches the new index.html (the service
           worker passes navigations through network-first). */}
-      {updateAvailable && (
-        <Toast
-          message="Update available — tap to refresh"
-          type="info"
-          fading={false}
-          bottom="130px"
-          onClick={() => window.location.reload()}
-        />
-      )}
+      <div role="status" aria-live="polite">
+        {updateAvailable && (
+          <Toast
+            message="Update available — tap to refresh"
+            type="info"
+            fading={false}
+            bottom="130px"
+            onClick={() => window.location.reload()}
+          />
+        )}
+      </div>
     </div>
   );
 }
