@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from "react";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const MAX_NAME_LENGTH = 60;
 
 function SaveStopModal({ stop, onSave, onCancel, title = "Add to favorites", initialName }) {
+  // Desktop has no on-screen keyboard, so the dialog can sit centered.
+  const isDesktop = useMediaQuery("(min-width: 640px)");
   const [customName, setCustomName] = useState(initialName ?? stop.name);
   const remaining = MAX_NAME_LENGTH - customName.length;
   const isOverLimit = customName.length > MAX_NAME_LENGTH;
@@ -59,12 +62,13 @@ function SaveStopModal({ stop, onSave, onCancel, title = "Add to favorites", ini
         bottom: 0,
         background: "rgba(0,0,0,0.6)",
         display: "flex",
-        // Top-anchored, not centered: the Android keyboard only shrinks the
-        // visual viewport, so a vertically-centered fixed dialog gets its
-        // bottom half (the buttons) hidden behind the keyboard.
-        alignItems: "flex-start",
+        // Mobile: top-anchored, not centered — the Android keyboard only
+        // shrinks the visual viewport, so a vertically-centered fixed dialog
+        // gets its bottom half (the buttons) hidden behind the keyboard.
+        // Desktop: no keyboard, so center it.
+        alignItems: isDesktop ? "center" : "flex-start",
         justifyContent: "center",
-        paddingTop: "8vh",
+        paddingTop: isDesktop ? 0 : "8vh",
         zIndex: 1000,
       }}
     >
