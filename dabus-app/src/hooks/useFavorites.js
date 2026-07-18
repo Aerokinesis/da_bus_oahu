@@ -23,6 +23,14 @@ export function useFavorites() {
     persist([...favorites.filter((f) => f.stop_id !== currentStop.id), newFavorite]);
   };
 
+  const renameFavorite = (stopId, customName) => {
+    persist(
+      favorites.map((f) =>
+        f.stop_id === stopId ? { ...f, custom_name: customName } : f,
+      ),
+    );
+  };
+
   const removeFavorite = (stopId) => {
     persist(favorites.filter((f) => f.stop_id !== stopId));
   };
@@ -35,7 +43,7 @@ export function useFavorites() {
     persist([]);
   };
 
-  return { favorites, saveToFavorites, removeFavorite, clearFavorites, isCurrentStopFavorited};
+  return { favorites, saveToFavorites, renameFavorite, removeFavorite, clearFavorites, isCurrentStopFavorited};
 }
 
 

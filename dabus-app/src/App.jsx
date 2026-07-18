@@ -124,10 +124,13 @@ function App() {
   const {
     favorites,
     saveToFavorites,
+    renameFavorite,
     removeFavorite,
     clearFavorites,
     isCurrentStopFavorited,
   } = useFavorites();
+  // Favorite being renamed via the edit modal (null = closed).
+  const [editingFavorite, setEditingFavorite] = useState(null);
 
   const {
     nearbyStops,
@@ -532,6 +535,7 @@ function App() {
           <Favorites
             favorites={favorites}
             onSelectStop={(stopId) => handleFetchArrivals(stopId, "favorites")}
+            onEditFavorite={setEditingFavorite}
             onRemoveFavorite={(stopId) => {
               removeFavorite(stopId);
               showToast("Stop removed", "remove");
@@ -1011,6 +1015,20 @@ function App() {
             showToast("Stop saved");
           }}
           onCancel={() => setShowSaveModal(false)}
+        />
+      )}
+
+      {editingFavorite && (
+        <SaveStopModal
+          stop={{ id: editingFavorite.stop_id, name: editingFavorite.name }}
+          title="Rename favorite"
+          initialName={editingFavorite.custom_name}
+          onSave={(customName) => {
+            renameFavorite(editingFavorite.stop_id, customName);
+            setEditingFavorite(null);
+            showToast("Favorite renamed");
+          }}
+          onCancel={() => setEditingFavorite(null)}
         />
       )}
 

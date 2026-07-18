@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 
 const MAX_NAME_LENGTH = 60;
 
-function SaveStopModal({ stop, onSave, onCancel }) {
-  const [customName, setCustomName] = useState(stop.name);
+function SaveStopModal({ stop, onSave, onCancel, title = "Add to favorites", initialName }) {
+  const [customName, setCustomName] = useState(initialName ?? stop.name);
   const remaining = MAX_NAME_LENGTH - customName.length;
   const isOverLimit = customName.length > MAX_NAME_LENGTH;
 
@@ -84,7 +84,7 @@ function SaveStopModal({ stop, onSave, onCancel }) {
       >
         <div>
           <p id="save-stop-title" style={{ fontSize: "16px", fontWeight: 500, marginBottom: "4px" }}>
-            Add to favorites
+            {title}
           </p>
           <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
             Stop #{stop.id}

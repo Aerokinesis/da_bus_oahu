@@ -119,3 +119,29 @@
 .removeBtn:active {
   opacity: 0.6;
 }
+/* Edit-mode toggle in the header (replaces the old always-visible Clear all) */
+.editToggle {
+  background: none;
+  border: none;
+  color: var(--primary-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.removeDanger {
+  color: var(--danger);
+}
+
+/* Destructive bulk action, only visible in edit mode */
+.clearAllBtn {
+  margin-top: 10px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--danger);
+  font-size: 13px;
+  padding: 10px;
+  cursor: pointer;
+}
