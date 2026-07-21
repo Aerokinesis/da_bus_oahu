@@ -312,7 +312,7 @@ app.post("/api/contact", contactLimiter, express.json({ limit: "16kb" }), async 
     const cleanVersion = typeof appVersion === "string" ? appVersion.slice(0, 32) : "unknown"
     const cleanPlatform = typeof platform === "string" ? platform.slice(0, 256) : "unknown"
 
-    const subject = `[DaBus] ${CONTACT_CATEGORIES[cleanCategory]}`
+    const subject = `[WhereDaBusStay] ${CONTACT_CATEGORIES[cleanCategory]}`
     const text = [
         cleanMessage,
         "",
