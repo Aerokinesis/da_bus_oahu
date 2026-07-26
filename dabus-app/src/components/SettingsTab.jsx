@@ -1,5 +1,6 @@
 import styles from "./SettingsTab.module.css";
 import { APP_VERSION } from "../constants";
+import { detectPlatform } from "../hooks/usePwaInstall";
 
 const RADIUS_OPTIONS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5];
 
@@ -7,7 +8,11 @@ function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorit
   const radiusIndex = RADIUS_OPTIONS.indexOf(settings.searchRadius);
   const sliderValue = radiusIndex === -1 ? 3 : radiusIndex;
 
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  // Apple only permits installs from Safari, so iOS Chrome/Firefox/webviews
+  // need different wording — telling them to tap Share yields a bookmark, not
+  // an installed app.
+  const platform = detectPlatform();
+  const isIOS = platform.startsWith("ios");
   const showInstallSection = !isInstalled && (installPrompt || isIOS);
 
   return (
@@ -102,7 +107,13 @@ function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorit
               <div className={styles.iosInstallBlock}>
                 <p className={styles.rowLabel}>Add to Home Screen</p>
                 <p className={styles.rowSub}>
-                  Tap the{" "}
+                  {platform === "ios-other" && (
+                    <>
+                      On iPhone this only works in <strong>Safari</strong>. Open
+                      this page in Safari, then tap the{" "}
+                    </>
+                  )}
+                  {platform !== "ios-other" && <>Tap the{" "}</>}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline", verticalAlign: "middle" }}>
                     <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
                     <polyline points="16 6 12 2 8 6" />

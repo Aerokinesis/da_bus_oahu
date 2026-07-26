@@ -1,0 +1,110 @@
+.banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  /* Sit above the bottom nav (which already pads for the system nav bar). */
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  z-index: 2100; /* above Toast (2000), below modals */
+
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+
+  padding: 14px;
+  padding-right: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  animation: installSlideIn 0.28s ease;
+}
+
+@keyframes installSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+  }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sub {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.installBtn {
+  margin-top: 10px;
+  min-height: var(--control-h);
+  padding: 0 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.installBtn:active {
+  opacity: 0.85;
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.close:active {
+  background: var(--bg);
+}
+
+/* Desktop / wide: dock to a card in the corner instead of a full-width bar. */
+@media (min-width: 900px) {
+  .banner {
+    left: auto;
+    right: 20px;
+    bottom: 20px;
+    max-width: 360px;
+  }
+}

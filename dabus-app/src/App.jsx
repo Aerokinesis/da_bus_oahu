@@ -32,6 +32,7 @@ import { useUpdateCheck } from "./hooks/useUpdateCheck";
 import { useAndroidBack } from "./hooks/useAndroidBack";
 import { useMediaQuery } from "./hooks/useMediaQuery";
 import { usePwaInstall } from "./hooks/usePwaInstall";
+import InstallBanner from "./components/InstallBanner";
 import { useRoutes } from "./hooks/useRoutes";
 import { useAlerts } from "./hooks/useAlerts";
 import { API_BASE } from "./constants";
@@ -96,7 +97,14 @@ function App() {
   const [stopSearchQuery, setStopSearchQuery] = useState("");
 
   // PWA install prompt — see usePwaInstall.
-  const { installPrompt, isInstalled, promptInstall } = usePwaInstall();
+  const {
+    installPrompt,
+    isInstalled,
+    promptInstall,
+    platform: installPlatform,
+    showBanner: showInstallBanner,
+    dismissBanner: dismissInstallBanner,
+  } = usePwaInstall();
 
   const { toast, toastType, toastFading, showToast } = useToast();
   const updateAvailable = useUpdateCheck();
@@ -603,6 +611,16 @@ function App() {
       {loading && <p>Loading arrivals...</p>}
       {error && <p role="alert">{error}</p>}
       <PullToRefreshIndicator isPulling={isPulling} pullDistance={pullDistance} triggered={triggered} />
+
+      {/* Install prompt. Held back while the user is deeper in the app (map
+          views, arrivals, modals) so it never covers a map or a dialog. */}
+      {showInstallBanner && !isDeep && !showSaveModal && (
+        <InstallBanner
+          platform={installPlatform}
+          onInstall={promptInstall}
+          onDismiss={dismissInstallBanner}
+        />
+      )}
 
       <ErrorBoundary>
         {arrivals && arrivalsTab === activeTab && !isRouteSearching && (
