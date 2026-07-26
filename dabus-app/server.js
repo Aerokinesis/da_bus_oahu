@@ -336,7 +336,7 @@ app.post("/api/contact", contactLimiter, express.json({ limit: "16kb" }), async 
         const payload = {
             // Resend's shared sender works without a verified domain, but can
             // only deliver to the account owner's own email — exactly this case.
-            from: process.env.CONTACT_FROM_EMAIL || "DaBus <onboarding@resend.dev>",
+            from: process.env.CONTACT_FROM_EMAIL || "WhereDaBusStay <onboarding@resend.dev>",
             to: [to],
             subject,
             text,
