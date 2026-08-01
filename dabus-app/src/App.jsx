@@ -35,6 +35,7 @@ import { usePwaInstall } from "./hooks/usePwaInstall";
 import InstallBanner from "./components/InstallBanner";
 import { useRoutes } from "./hooks/useRoutes";
 import { useAlerts } from "./hooks/useAlerts";
+import { useAppMeta } from "./hooks/useAppMeta";
 import { API_BASE } from "./constants";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -108,6 +109,7 @@ function App() {
 
   const { toast, toastType, toastFading, showToast } = useToast();
   const updateAvailable = useUpdateCheck();
+  const dataUpdated = useAppMeta();
 
   const {
     arrivals,
@@ -605,6 +607,7 @@ function App() {
             onInstall={promptInstall}
             onOpenFaq={() => setFaqView(true)}
             onOpenContact={() => setContactView(true)}
+            dataUpdated={dataUpdated}
           />
         ))}
 

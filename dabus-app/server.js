@@ -48,7 +48,7 @@ const stops = parse(stopsData, { columns: true, skip_empty_lines: true })
 // Load pre-processed route/shape data (replaces the heavy shapes.txt, trips.txt,
 // stop_times.txt, and routes.txt that would blow the 512MB Railway memory limit).
 // Re-generate with: node preprocess.js
-const { routeDirections, shapes, shapeStops, stopBearings } = JSON.parse(
+const { routeDirections, shapes, shapeStops, stopBearings, feedInfo } = JSON.parse(
     fs.readFileSync("./data/processed.json", "utf8")
 )
 
@@ -225,6 +225,16 @@ app.get("/api/nearby-stops-by-coords", (req, res) => {
         .slice(0, 20)
 
     res.json({ stops: nearbyStops })
+})
+
+// App metadata endpoint — currently just exposes the GTFS feed's vintage so
+// the frontend can show "Data updated: <date>" without a hardcoded string
+// that goes stale every refresh.
+app.get("/api/meta", (req, res) => {
+    res.json({
+        gtfs_feed_version: feedInfo?.feed_version ?? null,
+        gtfs_feed_start_date: feedInfo?.feed_start_date ?? null,
+    })
 })
 
 // Stop info endpoint

@@ -4,7 +4,7 @@ import { detectPlatform } from "../hooks/usePwaInstall";
 
 const RADIUS_OPTIONS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5];
 
-function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorites, installPrompt, isInstalled, onInstall, onOpenFaq, onOpenContact }) {
+function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorites, installPrompt, isInstalled, onInstall, onOpenFaq, onOpenContact, dataUpdated }) {
   const radiusIndex = RADIUS_OPTIONS.indexOf(settings.searchRadius);
   const sliderValue = radiusIndex === -1 ? 3 : radiusIndex;
 
@@ -183,7 +183,7 @@ function SettingsTab({ settings, onUpdateSetting, onClearHistory, onClearFavorit
           <div className={styles.divider} />
           <div className={styles.aboutRow}>
             <span className={styles.aboutLabel}>Data updated</span>
-            <span className={styles.aboutVal}>Apr 2026</span>
+            <span className={styles.aboutVal}>{dataUpdated || "—"}</span>
           </div>
         </div>
       </div>

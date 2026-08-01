@@ -17,6 +17,8 @@ const routes   = read("routes.txt")
 const trips    = read("trips.txt")
 const stopTimes = read("stop_times.txt")
 const shapesRaw = read("shapes.txt")
+const feedInfoRaw = read("feed_info.txt")
+const feedInfo = feedInfoRaw[0] || null
 
 console.log(`  stops: ${stops.length}, trips: ${trips.length}, stop_times: ${stopTimes.length}, shapes: ${shapesRaw.length}`)
 
@@ -183,7 +185,7 @@ for (const [id, { s, c }] of Object.entries(bearingAccum)) {
     stopBearings[id] = Math.round((toDeg(Math.atan2(s, c)) + 360) % 360)
 }
 
-const out = { routeDirections, shapes, shapeStops, stopBearings }
+const out = { routeDirections, shapes, shapeStops, stopBearings, feedInfo }
 fs.writeFileSync("./data/processed.json", JSON.stringify(out))
 console.log(`Done. Wrote data/processed.json (${(fs.statSync("./data/processed.json").size / 1024 / 1024).toFixed(1)} MB)`)
 console.log(`  routeDirections: ${routeDirections.length}, shapes: ${Object.keys(shapes).length}, shapeStops: ${Object.keys(shapeStops).length}, stopBearings: ${Object.keys(stopBearings).length}`)
