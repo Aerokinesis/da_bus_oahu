@@ -64,13 +64,20 @@ for (const [routeId, routeTrips] of Object.entries(tripsByRoute)) {
     const route = routes.find(r => r.route_id === routeId)
     if (!route) continue
 
+    // Pick the trip with the MOST stops per direction, not the first one found.
+    // Some routes (notably Skyline) have short-turn/partial trips; if one of
+    // those is picked as the representative, the Routes page only shows a
+    // segment of the route's stops and a truncated shape polyline.
     const directions = {}
     for (const trip of routeTrips) {
         const dir = trip.direction_id ?? "0"
-        if (!directions[dir]) directions[dir] = trip
+        const count = (stopTimesByTrip[trip.trip_id] || []).length
+        if (!directions[dir] || count > directions[dir].count) {
+            directions[dir] = { trip, count }
+        }
     }
 
-    for (const [directionId, trip] of Object.entries(directions)) {
+    for (const [directionId, { trip }] of Object.entries(directions)) {
         const times = (stopTimesByTrip[trip.trip_id] || [])
             .sort((a, b) => parseInt(a.stop_sequence) - parseInt(b.stop_sequence))
 
