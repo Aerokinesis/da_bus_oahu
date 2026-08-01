@@ -1,6 +1,6 @@
 stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station,stop_serial_number
-5,5,LAGOON DR + IOLANA PL,,21.32165,-157.907739,,http://hea.thebus.org/nextbus.asp?s=5,,,3396
-6,6,LAGOON DR + KAPALULU PL,,21.319658,-157.910599,,http://hea.thebus.org/nextbus.asp?s=6,,,3502
+5,5,LAGOON DR + IOLANA PL,,21.321687,-157.907687,,http://hea.thebus.org/nextbus.asp?s=5,,,3396
+6,6,LAGOON DR + KAPALULU PL,,21.319702,-157.910531,,http://hea.thebus.org/nextbus.asp?s=6,,,3502
 7,7,LAGOON DR + MOKUEA PL,,21.318565,-157.912124,,http://hea.thebus.org/nextbus.asp?s=7,,,3606
 8,8,LAGOON DR + KEEHI PL,,21.316639,-157.914877,,http://hea.thebus.org/nextbus.asp?s=8,,,3716
 9,9,LAGOON DR + IAKO PL,,21.313973,-157.918638,,http://hea.thebus.org/nextbus.asp?s=9,,,3824
@@ -281,7 +281,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 341,341,NUUANU AVE + OPP KAWANANAKOA PL,,21.326398,-157.847336,,http://hea.thebus.org/nextbus.asp?s=341,,,2574
 342,342,NUUANU AVE + OPP WYLLIE ST,,21.327254,-157.846562,,http://hea.thebus.org/nextbus.asp?s=342,,,2585
 343,343,PALI HWY + OPP JACK LN,,21.330538,-157.843906,,http://hea.thebus.org/nextbus.asp?s=343,,,2596
-344,344,PALI HWY + 2627,,21.331322,-157.843256,,http://hea.thebus.org/nextbus.asp?s=344,,,2607
+344,344,PALI HWY + AKAMU PL,,21.331322,-157.843256,,http://hea.thebus.org/nextbus.asp?s=344,,,2607
 345,345,PALI HWY + MOANAWAI PL,,21.332885,-157.841986,,http://hea.thebus.org/nextbus.asp?s=345,,,2618
 346,346,PALI HWY + LAIMI RD,,21.334339,-157.840884,,http://hea.thebus.org/nextbus.asp?s=346,,,2621
 347,347,PALI HWY + QUEEN EMMA SUMMER PALACE,,21.335434,-157.84006,,http://hea.thebus.org/nextbus.asp?s=347,,,2622
@@ -298,7 +298,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 374,374,PALI HWY + COUNTRY CLUB RD,,21.336618,-157.839131,,http://hea.thebus.org/nextbus.asp?s=374,,,2843
 375,375,PALI HWY + AHIPUU ST,,21.335527,-157.840397,,http://hea.thebus.org/nextbus.asp?s=375,,,2854
 376,376,PALI HWY + AHI PL,,21.334119,-157.841416,,http://hea.thebus.org/nextbus.asp?s=376,,,2865
-377,377,PALI HWY + 2702,,21.332838,-157.842393,,http://hea.thebus.org/nextbus.asp?s=377,,,2874
+377,377,PALI HWY + MOANAWAI PL,,21.332838,-157.842393,,http://hea.thebus.org/nextbus.asp?s=377,,,2874
 378,378,PALI HWY + JACK LN,,21.331399,-157.843567,,http://hea.thebus.org/nextbus.asp?s=378,,,2885
 379,379,PALI HWY + NIOLOPA PL,,21.329927,-157.844816,,http://hea.thebus.org/nextbus.asp?s=379,,,2895
 380,380,NUUANU AVE + WYLLIE ST,,21.32764,-157.846305,,http://hea.thebus.org/nextbus.asp?s=380,,,2907
@@ -554,7 +554,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 696,696,KAMEHAMEHA HWY + FORD ISLAND BL,,21.369525,-157.935292,,http://hea.thebus.org/nextbus.asp?s=696,,,3602
 697,697,KAMEHAMEHA HWY + ARIZONA MEMORIAL PL,,21.366863,-157.93668,,http://hea.thebus.org/nextbus.asp?s=697,,,3603
 698,698,KAMEHAMEHA HWY + ARIZONA ST,,21.364256,-157.93786,,http://hea.thebus.org/nextbus.asp?s=698,,,3604
-699,699,KAMEHAMEHA HWY + OPP RADFORD DR,,21.351994,-157.935488,,http://hea.thebus.org/nextbus.asp?s=699,,,3605
+699,699,KAMEHAMEHA HWY + MAKALAPA RD,,21.351994,-157.935488,,http://hea.thebus.org/nextbus.asp?s=699,,,3605
 700,700,KAMEHAMEHA HWY + CENTER DR,,21.349195,-157.934864,,http://hea.thebus.org/nextbus.asp?s=700,,,3608
 701,701,NIMITZ HWY + VALKENBURGH ST,,21.339784,-157.929893,,http://hea.thebus.org/nextbus.asp?s=701,,,3609
 702,702,NIMITZ HWY + ELLIOTT ST,,21.338527,-157.925283,,http://hea.thebus.org/nextbus.asp?s=702,,,3610
@@ -2098,7 +2098,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 2577,2577,MAKAKILO DR + OPP KIKAHA ST,,21.367164,-158.084385,,http://hea.thebus.org/nextbus.asp?s=2577,,,1663
 2578,2578,KAONOHI ST + ONIKINIKI PL,,21.398501,-157.918883,,http://hea.thebus.org/nextbus.asp?s=2578,,,1664
 2579,2579,KAONOHI ST + OPP MALUALUA ST,,21.398416,-157.921522,,http://hea.thebus.org/nextbus.asp?s=2579,,,1665
-2580,2580,KAONOHI ST + KAHAPILI ST,,21.398427,-157.924224,,http://hea.thebus.org/nextbus.asp?s=2580,,,1667
+2580,2580,KAONOHI ST + KAHAPILI ST,,21.3982,-157.924429,,http://hea.thebus.org/nextbus.asp?s=2580,,,1667
 2581,2581,KAHAPILI ST + KAOKOA PL,,21.397614,-157.925456,,http://hea.thebus.org/nextbus.asp?s=2581,,,1668
 2582,2582,KAHAPILI ST + LAELUA PL,,21.397258,-157.927913,,http://hea.thebus.org/nextbus.asp?s=2582,,,1669
 2583,2583,KAHAPILI ST + KAONOHI ST,,21.396454,-157.92856,,http://hea.thebus.org/nextbus.asp?s=2583,,,1670
@@ -2143,7 +2143,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 2624,2624,KAONOHI ST + 98-715,,21.395452,-157.932621,,http://hea.thebus.org/nextbus.asp?s=2624,,,1716
 2625,2625,KAONOHI ST + 98-831,,21.396274,-157.930028,,http://hea.thebus.org/nextbus.asp?s=2625,,,1717
 2626,2626,KAONOHI ST + OPP KAONOHI PL,,21.39602,-157.927775,,http://hea.thebus.org/nextbus.asp?s=2626,,,1718
-2627,2627,KAONOHI ST + IHO PL,,21.395723,-157.9262,,http://hea.thebus.org/nextbus.asp?s=2627,,,1719
+2627,2627,KAONOHI ST + IHO PL,,21.39579,-157.926172,,http://hea.thebus.org/nextbus.asp?s=2627,,,1719
 2628,2628,KAONOHI ST + 98-1039,,21.395848,-157.923443,,http://hea.thebus.org/nextbus.asp?s=2628,,,1720
 2629,2629,KAONOHI ST + MAHOLA PL,,21.396571,-157.921283,,http://hea.thebus.org/nextbus.asp?s=2629,,,1721
 2630,2630,KAONOHI ST + OPP MALUALUA ST,,21.397019,-157.919213,,http://hea.thebus.org/nextbus.asp?s=2630,,,1723
@@ -2333,10 +2333,10 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 2849,2849,PUKOLOA ST + MAPUNAPUNA ST,,21.344103,-157.897555,,http://hea.thebus.org/nextbus.asp?s=2849,,,1960
 2850,2850,AHUA ST + KIKOWAENA ST,,21.343996,-157.895006,,http://hea.thebus.org/nextbus.asp?s=2850,,,1962
 2853,2853,LAGOON DR + OPP IAKO PL,,21.313928,-157.918589,,http://hea.thebus.org/nextbus.asp?s=2853,,,1964
-2854,2854,LAGOON DR + OPP KEEHI PL,,21.316594,-157.914822,,http://hea.thebus.org/nextbus.asp?s=2854,,,1965
+2854,2854,LAGOON DR + OPP KEEHI PL,,21.316777,-157.914555,,http://hea.thebus.org/nextbus.asp?s=2854,,,1965
 2855,2855,LAGOON DR + OPP MOKUEA PL,,21.318508,-157.912082,,http://hea.thebus.org/nextbus.asp?s=2855,,,1966
-2856,2856,LAGOON DR + OPP KAPALULU PL,,21.319605,-157.910552,,http://hea.thebus.org/nextbus.asp?s=2856,,,1967
-2857,2857,LAGOON DR + OPP IOLANA PL,,21.321611,-157.907682,,http://hea.thebus.org/nextbus.asp?s=2857,,,1968
+2856,2856,LAGOON DR + OPP KAPALULU PL,,21.319649,-157.910495,,http://hea.thebus.org/nextbus.asp?s=2856,,,1967
+2857,2857,LAGOON DR + OPP IOLANA PL,,21.321662,-157.907609,,http://hea.thebus.org/nextbus.asp?s=2857,,,1968
 2864,2864,ALA MAHAMOE ST + ALA AMOAMO ST,,21.344223,-157.890862,,http://hea.thebus.org/nextbus.asp?s=2864,,,1976
 2865,2865,ALA MAHAMOE ST + OPP UNULAU PL,,21.346692,-157.890768,,http://hea.thebus.org/nextbus.asp?s=2865,,,1977
 2866,2866,ALA MAHAMOE ST + ALA KOLOPUA ST,,21.347621,-157.8902,,http://hea.thebus.org/nextbus.asp?s=2866,,,1978
@@ -3736,7 +3736,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 4798,4798,6TH AVE + MAUNALOA AVE,,21.280316,-157.809761,,http://hea.thebus.org/nextbus.asp?s=4798,,,4947
 4799,4799,KAIMUKI AVE + 4TH AVE,,21.283288,-157.810704,,http://hea.thebus.org/nextbus.asp?s=4799,,,4948
 4800,4800,KAIMUKI AVE + KAPAHULU AVE,,21.285992,-157.813619,,http://hea.thebus.org/nextbus.asp?s=4800,,,4949
-4801,4801,KAONOHI ST + IHO PL,,21.395626,-157.925544,,http://hea.thebus.org/nextbus.asp?s=4801,,,4950
+4801,4801,KAONOHI ST + IHO PL,,21.395732,-157.925536,,http://hea.thebus.org/nextbus.asp?s=4801,,,4950
 4802,4802,KAMEHAMEHA HWY + OPP KINA PL,,21.559232,-157.861345,,http://hea.thebus.org/nextbus.asp?s=4802,,,4993
 4803,4803,ANOI RD + UHILEHUA ST,,21.401958,-157.803992,,http://hea.thebus.org/nextbus.asp?s=4803,,,4951
 4804,4804,ANOI RD + UHILEHUA ST,,21.401617,-157.803973,,http://hea.thebus.org/nextbus.asp?s=4804,,,4952
@@ -3744,8 +3744,8 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 4806,4806,ROOSEVELT AVE + BOXER RD,,21.324814,-158.085552,,http://hea.thebus.org/nextbus.asp?s=4806,,,4954
 4807,4807,ROOSEVELT AVE + HORNET AVE,,21.32287,-158.078221,,http://hea.thebus.org/nextbus.asp?s=4807,,,4955
 4808,4808,ROOSEVELT AVE + LEXINGTON ST,,21.322871,-158.073534,,http://hea.thebus.org/nextbus.asp?s=4808,,,4956
-4809,4809,OPP KA MAKANA ALII CENTER - WEST,,21.331997,-158.051581,,http://hea.thebus.org/nextbus.asp?s=4809,,,4957
-4810,4810,KAPOLEI PKWY + OPP KUALAKAI PKWY,,21.335369,-158.050267,,http://hea.thebus.org/nextbus.asp?s=4810,,,4958
+4809,4809,OPP KA MAKANA ALII CENTER - WEST,,21.33178,-158.052594,,http://hea.thebus.org/nextbus.asp?s=4809,,,4957
+4810,4810,KAPOLEI PKWY + OPP KUALAKAI PKWY,,21.33551,-158.050228,,http://hea.thebus.org/nextbus.asp?s=4810,,,4958
 4811,4811,KAPOLEI PKWY + RENTON RD,,21.334904,-158.040781,,http://hea.thebus.org/nextbus.asp?s=4811,,,4959
 4812,4812,KAPOLEI PKWY + GEIGER RD,,21.331168,-158.028295,,http://hea.thebus.org/nextbus.asp?s=4812,,,4960
 4813,4813,KAPOLEI PKWY + KOANA ST,,21.326613,-158.027065,,http://hea.thebus.org/nextbus.asp?s=4813,,,4961
@@ -3757,8 +3757,8 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 4819,4819,KAPOLEI PKWY + KOANA ST,,21.326234,-158.026547,,http://hea.thebus.org/nextbus.asp?s=4819,,,4967
 4820,4820,KAPOLEI PKWY + RENTON RD,,21.335146,-158.04061,,http://hea.thebus.org/nextbus.asp?s=4820,,,4968
 4821,4821,KA MAKANA ALII MAIN DRWY + OPP KUALAKAI PKWY,,21.335429,-158.051353,,http://hea.thebus.org/nextbus.asp?s=4821,,,4969
-4822,4822,KA MAKANA ALII CENTER - EAST,,21.333322,-158.05006,,http://hea.thebus.org/nextbus.asp?s=4822,,,4970
-4823,4823,KA MAKANA ALII CENTER - WEST,,21.332426,-158.051924,,http://hea.thebus.org/nextbus.asp?s=4823,,,4971
+4822,4822,KA MAKANA ALII CENTER - EAST,,21.333179,-158.049914,,http://hea.thebus.org/nextbus.asp?s=4822,,,4970
+4823,4823,KA MAKANA ALII CENTER - WEST,,21.331879,-158.052747,,http://hea.thebus.org/nextbus.asp?s=4823,,,4971
 4824,4824,ROOSEVELT AVE + OPP LEXINGTON ST,,21.323022,-158.073529,,http://hea.thebus.org/nextbus.asp?s=4824,,,4972
 4825,4825,ROOSEVELT AVE + OPP HORNET AVE,,21.323213,-158.078377,,http://hea.thebus.org/nextbus.asp?s=4825,,,4973
 4826,4826,ROOSEVELT AVE + KAMOKILA BL,,21.325282,-158.0865,,http://hea.thebus.org/nextbus.asp?s=4826,,,4974
@@ -3807,11 +3807,11 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 4870,4870,KUHIO AVE + OPP DUKES LN,,21.279839,-157.82646,,http://hea.thebus.org/nextbus.asp?s=4870,,,5019
 4871,4871,NIMITZ HWY + BISHOP ST,,21.306779,-157.863335,,http://hea.thebus.org/nextbus.asp?s=4871,,,5020
 4872,4872,MAKALAPA STATION,,21.352761,-157.934997,,http://hea.thebus.org/nextbus.asp?s=4872,,,5021
-4873,4873,NORTH RD + RADFORD DR,,21.352587,-157.938816,,http://hea.thebus.org/nextbus.asp?s=4873,,,5022
+4873,4873,NORTH RD + MAKALAPA RD,,21.352587,-157.938816,,http://hea.thebus.org/nextbus.asp?s=4873,,,5022
 4874,4874,CENTER DR + C AVE,,21.34852,-157.937106,,http://hea.thebus.org/nextbus.asp?s=4874,,,5023
 4875,4875,CENTER DR + OPP SOUTH DR,,21.347308,-157.942579,,http://hea.thebus.org/nextbus.asp?s=4875,,,5024
 4876,4876,KAMAAHA AVE + KAMAAHA LP,,21.334186,-158.069091,,http://hea.thebus.org/nextbus.asp?s=4876,,,5025
-4877,4877,MAUNAKEA ST + N. HOTEL ST,,21.312126,-157.86314,,http://hea.thebus.org/nextbus.asp?s=4877,,,5027
+4877,4877,N. HOTEL ST + MAUNAKEA ST,,21.312214,-157.862743,,http://hea.thebus.org/nextbus.asp?s=4877,,,5027
 4878,4878,LAGOON DR + UALENA ST (FARSIDE),,21.33256,-157.901948,,http://hea.thebus.org/nextbus.asp?s=4878,,,5028
 4880,4880,KAMEHAMEHA HWY + KUALA ST,,21.396926,-157.978991,,http://hea.thebus.org/nextbus.asp?s=4880,,,5029
 32003,32003,KALIHI FACILITY GARAGE,,21.335902,-157.886529,,http://hea.thebus.org/nextbus.asp?s=32003,,,3934
@@ -3829,4 +3829,20 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 10032,10032,LELEPAUA DANIEL K. INOUYE INTERNATIONAL AIRPORT STATION,,21.333777,-157.920954,,http://hea.thebus.org/nextbus.asp?s=10032,,,
 10031,10031,AHUA LAGOON DRIVE STATION,,21.332778,-157.901383,,http://hea.thebus.org/nextbus.asp?s=10031,,,
 10030,10030,KAHAUIKI KALIHI TRANSIT CENTER STATION,,21.33274,-157.888805,,http://hea.thebus.org/nextbus.asp?s=10030,,,
-4511_merge,4511,PUNCHBOWL MEMORIAL CEMETERY,,21.3136,-157.84627,,http://hea.thebus.org/nextbus.asp?s=4511,,,5026
+5_merge,5,LAGOON DR + IOLANA PL,,21.32165,-157.907739,,http://hea.thebus.org/nextbus.asp?s=5,,,3396
+6_merge,6,LAGOON DR + KAPALULU PL,,21.319658,-157.910599,,http://hea.thebus.org/nextbus.asp?s=6,,,3502
+344_merge,344,PALI HWY + 2627,,21.331322,-157.843256,,http://hea.thebus.org/nextbus.asp?s=344,,,2607
+377_merge,377,PALI HWY + 2702,,21.332838,-157.842393,,http://hea.thebus.org/nextbus.asp?s=377,,,2874
+699_merge,699,KAMEHAMEHA HWY + OPP RADFORD DR,,21.351994,-157.935488,,http://hea.thebus.org/nextbus.asp?s=699,,,3605
+2580_merge,2580,KAONOHI ST + KAHAPILI ST,,21.398427,-157.924224,,http://hea.thebus.org/nextbus.asp?s=2580,,,1667
+2627_merge,2627,KAONOHI ST + IHO PL,,21.395723,-157.9262,,http://hea.thebus.org/nextbus.asp?s=2627,,,1719
+2854_merge,2854,LAGOON DR + OPP KEEHI PL,,21.316594,-157.914822,,http://hea.thebus.org/nextbus.asp?s=2854,,,1965
+2856_merge,2856,LAGOON DR + OPP KAPALULU PL,,21.319605,-157.910552,,http://hea.thebus.org/nextbus.asp?s=2856,,,1967
+2857_merge,2857,LAGOON DR + OPP IOLANA PL,,21.321611,-157.907682,,http://hea.thebus.org/nextbus.asp?s=2857,,,1968
+4801_merge,4801,KAONOHI ST + IHO PL,,21.395626,-157.925544,,http://hea.thebus.org/nextbus.asp?s=4801,,,4950
+4809_merge,4809,OPP KA MAKANA ALII CENTER - WEST,,21.331997,-158.051581,,http://hea.thebus.org/nextbus.asp?s=4809,,,4957
+4810_merge,4810,KAPOLEI PKWY + OPP KUALAKAI PKWY,,21.335369,-158.050267,,http://hea.thebus.org/nextbus.asp?s=4810,,,4958
+4822_merge,4822,KA MAKANA ALII CENTER - EAST,,21.333322,-158.05006,,http://hea.thebus.org/nextbus.asp?s=4822,,,4970
+4823_merge,4823,KA MAKANA ALII CENTER - WEST,,21.332426,-158.051924,,http://hea.thebus.org/nextbus.asp?s=4823,,,4971
+4873_merge,4873,NORTH RD + RADFORD DR,,21.352587,-157.938816,,http://hea.thebus.org/nextbus.asp?s=4873,,,5022
+4877_merge,4877,MAUNAKEA ST + N. HOTEL ST,,21.312126,-157.86314,,http://hea.thebus.org/nextbus.asp?s=4877,,,5027
