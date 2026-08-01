@@ -159,7 +159,7 @@ app.get("/api/routes", (req, res) => {
     res.json({
         routes: routeDirections.map(({ id, route_short_name, route_long_name, headsign }) => ({
             route_id: id,
-            route_short_name: route_short_name || "–",
+            route_short_name: route_short_name || route_long_name || "–",
             route_long_name: headsign
                 ? headsign.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
                 : route_long_name,
