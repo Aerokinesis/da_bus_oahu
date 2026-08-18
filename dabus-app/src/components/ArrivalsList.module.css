@@ -130,14 +130,6 @@
   gap: 6px;
 }
 
-.canceledTag {
-  font-size: 11px;
-  background: #3a1a1a;
-  color: #f87171;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
 /* Arrival times render as a tinted chip in both themes (a11y audit
    finding #1). Light: #92400e on #fef3c7, 6.37:1. Dark: brand gold
    #e8b84b on #3b2c06, 7.35:1. Vars live in index.css. */
@@ -193,6 +185,18 @@
 .scheduled {
   background: #e0e7ff;
   color: #3730a3;
+}
+
+/* Status pill for a trip whose cancel flag we trust (no live GPS). */
+.canceledPill {
+  background: #3a1a1a;
+  color: #f87171;
+}
+
+/* A canceled trip's scheduled time is still useful ("the 3:15 is
+   canceled") but shouldn't read as a promise — strike it through. */
+.card.canceled .scheduledTime {
+  text-decoration: line-through;
 }
 
 .scheduledTime {

@@ -149,28 +149,27 @@ function ArrivalsList({
         {safeArrivals.map((bus) => {
           const isArrived = bus.arrived === true;
           const isLive = bus.estimated === "1";
-          const isCanceled = bus.canceled === "1";
-          // TheBus marks the scheduled *block* canceled even when a vehicle
-          // still runs it. Only trust the cancel when live GPS confirms it;
-          // otherwise treat it as a stale flag and show "No GPS" (as DaBus2
-          // did) rather than a contradictory "Canceled" + "Scheduled".
-          const trustCanceled = isCanceled && isLive;
+          // TheBus sometimes leaves the canceled flag set on a block that a
+          // vehicle is still running. Live GPS means a bus really is coming,
+          // so it overrides the flag; canceled + no GPS is exactly what a
+          // real cancellation looks like (a canceled trip has no vehicle
+          // transmitting), so that's when we trust it.
+          const isCanceled = bus.canceled === "1" && !isLive;
 
           return (
           <div
             key={bus.id}
-            className={`${styles.card} ${isArrived ? styles.arrivedCard : ""} ${trustCanceled ? styles.canceled : ""}`}
+            className={`${styles.card} ${isArrived ? styles.arrivedCard : ""} ${isCanceled ? styles.canceled : ""}`}
           >
             <div className={styles.cardTop}>
               <div className={styles.routeBadge}>{bus.route}</div>
-              <div className={styles.headsign}>
-                {trustCanceled && !isArrived && (
-                  <span className={styles.canceledTag}>Canceled</span>
-                )}
-                {bus.headsign}
-              </div>
+              <div className={styles.headsign}>{bus.headsign}</div>
               <div className={isArrived ? styles.arrivedTime : styles.time}>
-                {isArrived ? "Arrived" : getMinutesUntil(bus.stopTime, bus.date)}
+                {isArrived
+                  ? "Arrived"
+                  : isCanceled
+                    ? "—"
+                    : getMinutesUntil(bus.stopTime, bus.date)}
               </div>
             </div>
 
@@ -186,9 +185,9 @@ function ArrivalsList({
               ) : (
                 <>
                   <span
-                    className={`${styles.liveTag} ${isLive ? styles.live : styles.scheduled}`}
+                    className={`${styles.liveTag} ${isLive ? styles.live : isCanceled ? styles.canceledPill : styles.scheduled}`}
                   >
-                    {isLive ? "● Live" : isCanceled ? "○ No GPS" : "○ Scheduled"}
+                    {isLive ? "● Live" : isCanceled ? "○ Canceled" : "○ Scheduled"}
                   </span>
                   <span className={styles.scheduledTime}>{bus.stopTime}</span>
                   {isLive && (
