@@ -162,9 +162,13 @@ If you're forking this to run your own version, a few things to know:
 - The rate limiter caps `/api/*` at 60 requests per minute per IP. Adjust in `server.js` if your use case needs more.
 - Every route param is validated before lookup — digit-only stop IDs, safe-id regex on shape/trip/route IDs, `hasOwnProperty.call(...)` guards against prototype-pollution lookups, regex-escaped search input.
 
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started.
+
 ## License
 
-Personal project, not affiliated with OTS or TheBus. GTFS data and API access used under OTS's public Terms of Use.
+MIT — see [LICENSE](LICENSE). Not affiliated with OTS or TheBus; GTFS data and API access used under OTS's public Terms of Use.
 
 ## Mahalo
 
