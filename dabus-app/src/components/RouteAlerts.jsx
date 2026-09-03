@@ -1,13 +1,24 @@
+import { useState } from "react";
+
 import styles from "./RouteAlerts.module.css";
 
-// Renders a stack of service-alert pills with an external-link target and a
-// dismiss button. Pass in an already-filtered `alerts` array — this component
-// does not deduplicate or filter by route itself.
+// Renders a stack of service-alert pills with a dismiss button. Pass in an
+// already-filtered `alerts` array — this component does not deduplicate or
+// filter by route itself.
+//
+// Alerts that came with a scraped `description` (currently: the
+// Updates/ServiceDisruption.asp entries — detours, bus stop closures) expand
+// in place when tapped, showing that description instead of sending the user
+// to TheBus's website. Alerts with no description (the RiderAlerts_Listing.asp
+// entries — holidays, surveys) still open their own page on thebus.org, since
+// that's the only place their actual content lives.
 //
 // Also takes `hiddenAlerts` — alerts the user has previously dismissed that
 // apply to the same context. If any are present, a "Show N hidden" link
 // appears below; clicking it calls `onRestore` with their IDs.
 function RouteAlerts({ alerts, hiddenAlerts, onDismiss, onRestore, compact = false }) {
+  const [expandedIds, setExpandedIds] = useState(() => new Set());
+
   const hasVisible = alerts && alerts.length > 0;
   const hiddenCount = hiddenAlerts ? hiddenAlerts.length : 0;
 
@@ -19,34 +30,78 @@ function RouteAlerts({ alerts, hiddenAlerts, onDismiss, onRestore, compact = fal
     }
   };
 
+  const toggleExpanded = (alertId) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(alertId)) next.delete(alertId);
+      else next.add(alertId);
+      return next;
+    });
+  };
+
   return (
     <div className={compact ? styles.containerCompact : styles.container}>
       {hasVisible &&
-        alerts.map((alert) => (
-          <div key={alert.id} className={styles.alert} role="alert">
-            <div className={styles.alertBody}>
-              <span className={styles.tag}>{alert.category_label}</span>
-              <a
-                href={alert.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.title}
-              >
-                {alert.title}
-              </a>
+        alerts.map((alert) => {
+          const hasDescription = Boolean(alert.description);
+          const isExpanded = hasDescription && expandedIds.has(alert.id);
+
+          return (
+            <div key={alert.id} className={styles.alert} role="alert">
+              <div className={styles.alertBody}>
+                <span className={styles.tag}>{alert.category_label}</span>
+                {hasDescription ? (
+                  <button
+                    type="button"
+                    className={styles.titleBtn}
+                    onClick={() => toggleExpanded(alert.id)}
+                    aria-expanded={isExpanded}
+                  >
+                    <span className={styles.titleText}>{alert.title}</span>
+                    <span
+                      className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ""}`}
+                      aria-hidden="true"
+                    >
+                      ▾
+                    </span>
+                  </button>
+                ) : (
+                  <a
+                    href={alert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.title}
+                  >
+                    {alert.title}
+                  </a>
+                )}
+                {isExpanded && (
+                  <div className={styles.description}>
+                    <p>{alert.description}</p>
+                    <a
+                      href={alert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.sourceLink}
+                    >
+                      See all disruptions on thebus.org ↗
+                    </a>
+                  </div>
+                )}
+              </div>
+              {onDismiss && (
+                <button
+                  type="button"
+                  className={styles.dismiss}
+                  onClick={() => onDismiss(alert.id)}
+                  aria-label={`Dismiss alert: ${alert.title}`}
+                >
+                  ×
+                </button>
+              )}
             </div>
-            {onDismiss && (
-              <button
-                type="button"
-                className={styles.dismiss}
-                onClick={() => onDismiss(alert.id)}
-                aria-label={`Dismiss alert: ${alert.title}`}
-              >
-                ×
-              </button>
-            )}
-          </div>
-        ))}
+          );
+        })}
       {hiddenCount > 0 && onRestore && (
         <button
           type="button"

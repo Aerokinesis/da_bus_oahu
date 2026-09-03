@@ -54,6 +54,71 @@
   text-decoration: underline;
 }
 
+.titleBtn {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.titleBtn:hover .titleText {
+  text-decoration: underline;
+}
+
+.titleText {
+  flex: 1;
+}
+
+.chevron {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  transform: rotate(-90deg);
+  transition: transform 0.15s ease;
+  margin-top: 2px;
+}
+
+.chevronOpen {
+  transform: rotate(0deg);
+}
+
+.description {
+  margin-top: 2px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.description p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.sourceLink {
+  align-self: flex-start;
+  font-size: 11px;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.sourceLink:hover {
+  text-decoration: underline;
+}
+
 .dismiss {
   flex-shrink: 0;
   width: 28px;
