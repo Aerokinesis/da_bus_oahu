@@ -14,13 +14,22 @@
 
 .alert {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  flex-direction: column;
   padding: 10px 12px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 3px solid #e8b84b;
   border-radius: var(--radius);
+}
+
+/* Row: alertBody + dismiss button. Kept separate from .description below so
+   the dismiss button's reserved width column doesn't apply to the whole card
+   — otherwise flexbox reserves that space on every line, not just the one
+   the button visually sits on. */
+.alertHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .alertBody {
@@ -93,7 +102,7 @@
 }
 
 .description {
-  margin-top: 2px;
+  margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid var(--border);
   display: flex;

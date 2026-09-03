@@ -48,56 +48,61 @@ function RouteAlerts({ alerts, hiddenAlerts, onDismiss, onRestore, compact = fal
 
           return (
             <div key={alert.id} className={styles.alert} role="alert">
-              <div className={styles.alertBody}>
-                <span className={styles.tag}>{alert.category_label}</span>
-                {hasDescription ? (
-                  <button
-                    type="button"
-                    className={styles.titleBtn}
-                    onClick={() => toggleExpanded(alert.id)}
-                    aria-expanded={isExpanded}
-                  >
-                    <span className={styles.titleText}>{alert.title}</span>
-                    <span
-                      className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ""}`}
-                      aria-hidden="true"
+              <div className={styles.alertHeader}>
+                <div className={styles.alertBody}>
+                  <span className={styles.tag}>{alert.category_label}</span>
+                  {hasDescription ? (
+                    <button
+                      type="button"
+                      className={styles.titleBtn}
+                      onClick={() => toggleExpanded(alert.id)}
+                      aria-expanded={isExpanded}
                     >
-                      ▾
-                    </span>
-                  </button>
-                ) : (
-                  <a
-                    href={alert.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.title}
-                  >
-                    {alert.title}
-                  </a>
-                )}
-                {isExpanded && (
-                  <div className={styles.description}>
-                    <p>{alert.description}</p>
+                      <span className={styles.titleText}>{alert.title}</span>
+                      <span
+                        className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ""}`}
+                        aria-hidden="true"
+                      >
+                        ▾
+                      </span>
+                    </button>
+                  ) : (
                     <a
                       href={alert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={styles.sourceLink}
+                      className={styles.title}
                     >
-                      See all disruptions on thebus.org ↗
+                      {alert.title}
                     </a>
-                  </div>
+                  )}
+                </div>
+                {onDismiss && (
+                  <button
+                    type="button"
+                    className={styles.dismiss}
+                    onClick={() => onDismiss(alert.id)}
+                    aria-label={`Dismiss alert: ${alert.title}`}
+                  >
+                    ×
+                  </button>
                 )}
               </div>
-              {onDismiss && (
-                <button
-                  type="button"
-                  className={styles.dismiss}
-                  onClick={() => onDismiss(alert.id)}
-                  aria-label={`Dismiss alert: ${alert.title}`}
-                >
-                  ×
-                </button>
+              {/* Sibling of alertHeader, not a child of alertBody's row — so it
+                  gets the full card width instead of being squeezed by the
+                  dismiss button's reserved column. */}
+              {isExpanded && (
+                <div className={styles.description}>
+                  <p>{alert.description}</p>
+                  <a
+                    href={alert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.sourceLink}
+                  >
+                    See all disruptions on thebus.org ↗
+                  </a>
+                </div>
               )}
             </div>
           );
