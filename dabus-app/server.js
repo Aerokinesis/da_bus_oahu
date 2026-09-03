@@ -8,7 +8,7 @@ import fs from "fs"
 import { parse } from "csv-parse/sync"
 import http from "http"
 import https from "https"
-import { parseAlerts } from "./alerts.js"
+import { parseListingAlerts, parseDisruptionAlerts, mergeAlerts } from "./alerts.js"
 
 dotenv.config()
 
@@ -246,12 +246,23 @@ app.get("/api/stop/:stopId", (req, res) => {
     res.json({ stop_id: displayStopId(stop.stop_id), stop_name: stop.stop_name })
 })
 
-// Service alerts endpoint — scrapes the public OTS rider alerts page since OTS
-// doesn't publish the GTFS-Realtime feed URL. 5-minute in-memory cache; on
-// upstream failure we serve stale cache rather than erroring out.
-const ALERTS_URL = "https://www.thebus.org/RiderAlerts.asp"
+// Service alerts endpoint — scrapes two public OTS pages since OTS doesn't
+// publish the GTFS-Realtime feed URL. As of mid-2026 RiderAlerts.asp is just a
+// landing page; the actual content lives on these two (see alerts.js header
+// comment for details). 5-minute in-memory cache; on upstream failure we serve
+// stale cache rather than erroring out, and a failure on one source still lets
+// the other's alerts through.
+const ALERTS_LISTING_URL = "https://www.thebus.org/RiderAlerts_Listing.asp"
+const ALERTS_DISRUPTION_URL = "https://www.thebus.org/Updates/ServiceDisruption.asp"
 const ALERTS_CACHE_MS = 5 * 60 * 1000
 let alertsCache = { alerts: null, fetchedAt: 0 }
+
+const fetchAlertSource = async (url, parse) => {
+    const r = await fetch(url, { signal: AbortSignal.timeout(10000) })
+    if (!r.ok) throw new Error(`Upstream ${r.status} for ${url}`)
+    const html = await r.text()
+    return parse(html, knownRouteShortNames)
+}
 
 app.get("/api/alerts", async (req, res) => {
     const now = Date.now()
@@ -263,23 +274,28 @@ app.get("/api/alerts", async (req, res) => {
             fetched_at: alertsCache.fetchedAt,
         })
     }
-    try {
-        const r = await fetch(ALERTS_URL, { signal: AbortSignal.timeout(10000) })
-        if (!r.ok) throw new Error(`Upstream ${r.status}`)
-        const html = await r.text()
-        const parsed = parseAlerts(html, knownRouteShortNames)
+    const results = await Promise.allSettled([
+        fetchAlertSource(ALERTS_LISTING_URL, parseListingAlerts),
+        fetchAlertSource(ALERTS_DISRUPTION_URL, parseDisruptionAlerts),
+    ])
+    const fulfilled = results.filter((r) => r.status === "fulfilled").map((r) => r.value)
+
+    if (fulfilled.length > 0) {
+        // At least one source came through — merge what we have. A single
+        // source failing (OTS reshuffles pages again, one page times out) is
+        // still better served as a partial list than as a stale/error response.
+        const parsed = mergeAlerts(...fulfilled)
         alertsCache = { alerts: parsed, fetchedAt: now }
         res.json({ alerts: parsed, cached: false, stale: false, fetched_at: now })
-    } catch {
+    } else if (alertsCache.alerts) {
         // Better to serve a stale list than a hard error — alerts are advisory.
-        if (alertsCache.alerts) {
-            return res.json({
-                alerts: alertsCache.alerts,
-                cached: true,
-                stale: true,
-                fetched_at: alertsCache.fetchedAt,
-            })
-        }
+        res.json({
+            alerts: alertsCache.alerts,
+            cached: true,
+            stale: true,
+            fetched_at: alertsCache.fetchedAt,
+        })
+    } else {
         res.status(502).json({ error: "Could not fetch alerts" })
     }
 })
